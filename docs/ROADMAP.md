@@ -15,7 +15,7 @@ Status: split-aware eval v1 implemented.
 - Keep manual labels as optional held-out source. ✅ v1 done
 - Mix synthetic JSONL with real data. ✅ v1 done
 - Compare current rule solver vs AI ranker on the same cases. ✅ v1 done
-- Add confidence calibration so low-confidence predictions can be flagged. ✅ threshold sweep v1 done; family threshold sweep v1 done; true calibrated confidence still needs improvement.
+- Add confidence calibration so low-confidence predictions can be flagged. ✅ threshold sweep v1 done; family threshold sweep v1 done; numeric feature pass done; true calibrated confidence still needs improvement.
 - Add per-family error reports for numbers, short words, animal words, object words, and leetspeak.
 
 ## Phase 3: Synthetic data lab

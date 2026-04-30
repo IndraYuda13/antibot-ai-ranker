@@ -16,4 +16,5 @@
 - Added split-aware train/dev/test evaluation with optional manual-label holdout and synthetic JSONL mixing.
 - Added rule-vs-AI-vs-hybrid benchmark CLI and sample outputs.
 - Added confidence/threshold sweep CLI and sample calibration outputs.
-- Added family-aware challenge classifier and family threshold calibration CLI. This is research-only and not a production claim.
+- Added family-aware challenge classifier and family threshold calibration CLI.
+- Added numeric-aware features for digits, number words, roman numerals, simple math expressions, and leet number-word forms. This is research-only and not a production claim.

@@ -5,6 +5,7 @@ from itertools import permutations
 from difflib import SequenceMatcher
 
 from .dataset import Example
+from .numeric import numeric_similarity, numeric_value
 from .textnorm import clean, similarity
 
 
@@ -43,12 +44,19 @@ def pair_features(token: str, option_candidates: list[str]) -> dict[str, float]:
     sims = [similarity(token, cand) for cand in option_candidates[:5]]
     top_clean = clean(top)
     token_clean = clean(token)
+    numeric_scores = [numeric_similarity(token, cand) for cand in option_candidates[:5]]
+    token_number = numeric_value(token)
+    top_number = numeric_value(top)
     return {
         "bias": 1.0,
         "top_similarity": sims[0] if sims else 0.0,
         "best_similarity": max(sims) if sims else 0.0,
         "mean_similarity": sum(sims) / len(sims) if sims else 0.0,
         "exact_clean": 1.0 if token_clean and token_clean == top_clean else 0.0,
+        "numeric_match": max(numeric_scores) if numeric_scores else 0.0,
+        "numeric_mismatch": 1.0 if token_number is not None and top_number is not None and token_number != top_number else 0.0,
+        "token_has_number": 1.0 if token_number is not None else 0.0,
+        "top_has_number": 1.0 if top_number is not None else 0.0,
         "token_len": float(len(token_clean)),
         "top_len": float(len(top_clean)),
         "len_delta": float(abs(len(token_clean) - len(top_clean))),

@@ -59,7 +59,7 @@ antibot-ranker calibrate-family --epochs 4
 pytest
 ```
 
-Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is available through `antibot-ranker split-eval`; rule-vs-AI comparison is available through `antibot-ranker benchmark`, and global threshold sweep is available through `antibot-ranker calibrate`; family-aware threshold sweep is available through `antibot-ranker calibrate-family`.
+Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is available through `antibot-ranker split-eval`; rule-vs-AI comparison is available through `antibot-ranker benchmark`, and global threshold sweep is available through `antibot-ranker calibrate`; family-aware threshold sweep is available through `antibot-ranker calibrate-family`. Numeric-aware features are included for digits, number words, roman numerals, and simple math expressions.
 
 Default paths assume this repo lives at:
 

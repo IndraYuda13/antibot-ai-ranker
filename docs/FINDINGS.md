@@ -156,3 +156,8 @@ Do not integrate into `antibot-image-solver` until:
 ### Family-aware calibration v1
 
 Family-aware threshold sweep now groups examples by question token family. Current all-data best thresholds: words `0.1`, short_words `0.05`, leetspeak `0.0`, animals `0.15`, number_words/numeric `1.0`. Manual-only results still show AI helps words/short/leetspeak, while numeric and number-word coverage remains weak. This confirms the next model work should improve numeric/number-word features and use family-aware gating rather than one global threshold.
+
+
+### Numeric feature pass v1
+
+Numeric-aware features now parse digits, number words, roman numerals, simple math expressions, and common leet number-word forms. This improved weak numeric families: manual-only numeric moved from `2/4` to `3/4`, number_words from `0/1` to `1/1`; all-data numeric moved from `4/6` to `5/6`, number_words from `8/9` to `9/9`. Short_words and leetspeak still need broader feature/model work, so the AI ranker is still research-only.
