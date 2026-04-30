@@ -66,9 +66,10 @@ and source data is configured through environment variables if the default local
 - `ANTIBOT_RANKER_DB_NAME`
 - `ANTIBOT_RANKER_CASE_PREFIX`
 
-## Roadmap
+## Roadmap and findings
 
-See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+- Roadmap: [`docs/ROADMAP.md`](docs/ROADMAP.md)
+- Research findings: [`docs/FINDINGS.md`](docs/FINDINGS.md)
 
 ## Boundary
 
