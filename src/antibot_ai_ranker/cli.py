@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from .benchmark import benchmark_orders
-from .confidence import sweep_thresholds
+from .confidence import sweep_family_thresholds, sweep_thresholds
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
 from .features import predict_order, predict_order_scored
 from .splits import train_dev_test_report
@@ -44,6 +44,10 @@ def main() -> None:
     calib.add_argument("--epochs", type=int, default=8)
     calib.add_argument("--limit", type=int)
     calib.add_argument("--source", action="append", default=[])
+    calib_family = sub.add_parser("calibrate-family")
+    calib_family.add_argument("--epochs", type=int, default=8)
+    calib_family.add_argument("--limit", type=int)
+    calib_family.add_argument("--source", action="append", default=[])
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -64,6 +68,20 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "calibrate-family":
+        examples = load_examples()
+        if args.source:
+            allowed = set(args.source)
+            examples = [ex for ex in examples if ex.source in allowed]
+        if args.limit:
+            examples = examples[: args.limit]
+        weights = train_perceptron(examples, epochs=args.epochs)
+        scored = {ex.case_id: predict_order_scored(ex, weights) for ex in examples}
+        predictions = {case_id: pred.order for case_id, pred in scored.items()}
+        confidences = {case_id: pred.confidence for case_id, pred in scored.items()}
+        print(json.dumps(sweep_family_thresholds(examples, predictions, confidences), indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "calibrate":

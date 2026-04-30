@@ -151,3 +151,8 @@ Do not integrate into `antibot-image-solver` until:
 - Synthetic-only improvements do not regress real hard cases.
 - Confidence gate is calibrated.
 - Live post-restart soak window improves compared to the rule-only baseline.
+
+
+### Family-aware calibration v1
+
+Family-aware threshold sweep now groups examples by question token family. Current all-data best thresholds: words `0.1`, short_words `0.05`, leetspeak `0.0`, animals `0.15`, number_words/numeric `1.0`. Manual-only results still show AI helps words/short/leetspeak, while numeric and number-word coverage remains weak. This confirms the next model work should improve numeric/number-word features and use family-aware gating rather than one global threshold.

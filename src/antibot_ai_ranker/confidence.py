@@ -4,6 +4,7 @@ from collections.abc import Iterable, Mapping
 
 from .benchmark import benchmark_orders
 from .dataset import Example
+from .family import example_family
 
 
 def order_confidence(*, best_score: float, second_best_score: float) -> float:
@@ -39,3 +40,22 @@ def sweep_thresholds(
         ):
             best = compact
     return {"best": best or {}, "thresholds": rows}
+
+
+def sweep_family_thresholds(
+    examples: list[Example],
+    ai_predictions: Mapping[str, list[str]],
+    confidences: Mapping[str, float],
+    *,
+    thresholds: Iterable[float] | None = None,
+) -> dict[str, object]:
+    grouped: dict[str, list[Example]] = {}
+    for ex in examples:
+        grouped.setdefault(example_family(ex), []).append(ex)
+    families: dict[str, object] = {}
+    best_thresholds: dict[str, float] = {}
+    for family, items in grouped.items():
+        report = sweep_thresholds(items, ai_predictions, confidences, thresholds=thresholds)
+        families[family] = report
+        best_thresholds[family] = float(report.get("best", {}).get("threshold", 1.0))
+    return {"best_thresholds": best_thresholds, "families": families}

@@ -1,0 +1,20 @@
+{
+  "best_thresholds": {
+    "words": 0.1,
+    "short_words": 0.05,
+    "leetspeak": 0.0,
+    "animals": 0.15,
+    "number_words": 1.0,
+    "numeric": 1.0,
+    "unknown": 1.0
+  },
+  "family_hybrid_accuracy": {
+    "words": "242/248 = 97.58%",
+    "short_words": "910/942 = 96.60%",
+    "leetspeak": "53/58 = 91.38%",
+    "animals": "14/14 = 100.00%",
+    "number_words": "8/9 = 88.89%",
+    "numeric": "4/6 = 66.67%",
+    "unknown": "1/1 = 100.00%"
+  }
+}
