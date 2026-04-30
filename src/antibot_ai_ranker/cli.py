@@ -11,6 +11,7 @@ from .features import predict_order, predict_order_scored
 from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
 from .train import default_weights, evaluate_examples, save_model, train_perceptron
+from .validation import validated_family_gate_report
 
 
 def main() -> None:
@@ -48,6 +49,11 @@ def main() -> None:
     calib_family.add_argument("--epochs", type=int, default=8)
     calib_family.add_argument("--limit", type=int)
     calib_family.add_argument("--source", action="append", default=[])
+    gate = sub.add_parser("validate-gate")
+    gate.add_argument("--epochs", type=int, default=8)
+    gate.add_argument("--seed", type=int, default=1337)
+    gate.add_argument("--limit", type=int)
+    gate.add_argument("--holdout-source", action="append", default=[])
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -67,6 +73,19 @@ def main() -> None:
         )
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "validate-gate":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        report = validated_family_gate_report(
+            examples,
+            epochs=args.epochs,
+            seed=args.seed,
+            holdout_sources=set(args.holdout_source or []),
+        )
         print(json.dumps(report, indent=2, ensure_ascii=False))
         return
 

@@ -18,4 +18,5 @@
 - Added confidence/threshold sweep CLI and sample calibration outputs.
 - Added family-aware challenge classifier and family threshold calibration CLI.
 - Added numeric-aware features for digits, number words, roman numerals, simple math expressions, and leet number-word forms.
-- Added OCR alias features for short-word and leetspeak hard cases. This is research-only and not a production claim.
+- Added OCR alias features for short-word and leetspeak hard cases.
+- Added dev-selected family gate validation CLI to expose calibration behavior on test/heldout splits. This is research-only and not a production claim.

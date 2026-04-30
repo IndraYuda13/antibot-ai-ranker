@@ -166,3 +166,8 @@ Numeric-aware features now parse digits, number words, roman numerals, simple ma
 ### OCR alias feature pass v1
 
 Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> zoo`, `20r -> zor`, `mc -> arc`, `cir -> or`, `teg -> 424`, `t03 -> te`, `mal -> mel`, and `dnt -> lem`. Manual-only family calibration improved words `9/11 -> 10/11` and short_words `40/57 -> 44/57` compared with the earlier family baseline. All-data words reached `244/248` (`98.39%`) and short_words `920/954` (`96.44%`). Numeric remains unstable after feature interactions, so future work needs a proper model/validation split rather than only weight tweaks.
+
+
+### Dev-selected gate validation v1
+
+`validate-gate` now selects family thresholds on the dev split and applies them to test/heldout. This exposed an important limitation: when manual labels are held out, dev contains mostly accepted-success raw cases, so selected thresholds become conservative (`1.0`) and the hybrid refuses AI overrides on hard manual labels. Manual heldout result: rule `18/87` (`20.69%`), AI `69/87` (`79.31%`), hybrid `18/87` (`20.69%`). Conclusion: confidence/gating cannot be learned only from accepted-success raw data. Next step should create a balanced calibration set with some manual hard cases in dev, while reserving a separate manual test set for honest proof.

@@ -1,0 +1,9 @@
+{
+  "counts": {"train": 905, "dev": 193, "test": 195, "heldout": 0, "total": 1293},
+  "selected_thresholds": {"short_words": 0.35, "words": 1.0, "number_words": 1.0, "leetspeak": 1.0, "animals": 1.0},
+  "test_metrics": {
+    "rule": {"total": 195, "ok": 181, "wrong": 14, "accuracy": 92.82},
+    "ai": {"total": 195, "ok": 190, "wrong": 5, "accuracy": 97.44},
+    "hybrid": {"total": 195, "ok": 183, "wrong": 12, "accuracy": 93.85}
+  }
+}

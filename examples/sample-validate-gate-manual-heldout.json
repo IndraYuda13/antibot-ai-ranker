@@ -1,0 +1,14 @@
+{
+  "counts": {"train": 844, "dev": 180, "test": 182, "heldout": 87, "total": 1293},
+  "selected_thresholds": {"short_words": 1.0, "words": 1.0, "leetspeak": 1.0, "animals": 1.0, "number_words": 1.0},
+  "test_metrics": {
+    "rule": {"total": 182, "ok": 182, "wrong": 0, "accuracy": 100.0},
+    "ai": {"total": 182, "ok": 174, "wrong": 8, "accuracy": 95.6},
+    "hybrid": {"total": 182, "ok": 182, "wrong": 0, "accuracy": 100.0}
+  },
+  "heldout_metrics": {
+    "rule": {"total": 87, "ok": 18, "wrong": 69, "accuracy": 20.69},
+    "ai": {"total": 87, "ok": 69, "wrong": 18, "accuracy": 79.31},
+    "hybrid": {"total": 87, "ok": 18, "wrong": 69, "accuracy": 20.69}
+  }
+}
