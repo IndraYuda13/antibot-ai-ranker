@@ -1,0 +1,21 @@
+{
+  "accepted_penalty": 25,
+  "selected_thresholds": {
+    "animals": 1.0,
+    "leetspeak": 0.1,
+    "number_words": 1.0,
+    "numeric": 1.0,
+    "short_words": 1.0,
+    "words": 0.25
+  },
+  "real_test_metrics": {
+    "rule": "187/187 = 100.00%",
+    "ai": "178/187 = 95.19%",
+    "hybrid": "185/187 = 98.93%"
+  },
+  "manual_test_metrics": {
+    "rule": "9/44 = 20.45%",
+    "ai": "39/44 = 88.64%",
+    "hybrid": "18/44 = 40.91%"
+  }
+}

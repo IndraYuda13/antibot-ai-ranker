@@ -20,4 +20,5 @@
 - Added numeric-aware features for digits, number words, roman numerals, simple math expressions, and leet number-word forms.
 - Added OCR alias features for short-word and leetspeak hard cases.
 - Added dev-selected family gate validation CLI to expose calibration behavior on test/heldout splits.
-- Added balanced manual calibration/test validation CLI for honest hard-case gate evaluation. This is research-only and not a production claim.
+- Added balanced manual calibration/test validation CLI for honest hard-case gate evaluation.
+- Added safety-objective gate validation with accepted-raw regression penalty. This is research-only and not a production claim.

@@ -176,3 +176,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Balanced manual calibration/test v1
 
 `validate-balanced` splits manual labels into calibration and honest manual test. With `manual_calibration_ratio=0.5`, calibration selected thresholds `{words:0.25, short_words:0.1, leetspeak:0.15, animals:1.0, number_words:1.0, numeric:1.0}`. Manual test improved from rule `9/44` (`20.45%`) to hybrid `35/44` (`79.55%`), while AI alone got `38/44` (`86.36%`). Real accepted test remained safest with rule `186/186`; hybrid was `179/186`. This confirms manual hard cases must be represented in calibration, but production integration still needs a gate that protects accepted-success raw better.
+
+
+### Safety objective v1
+
+`validate-safety` selects family thresholds with an explicit penalty for accepted-success raw regressions. With accepted penalty `10`, manual test hybrid reached `37/44` (`84.09%`) but real accepted test was only `179/187` (`95.72%`). With accepted penalty `25`, real accepted hybrid improved to `185/187` (`98.93%`) but manual test dropped to `18/44` (`40.91%`). This exposes the core tradeoff: current confidence is not sharp enough to protect accepted raw while capturing most manual hard-case gains. The next productive step is a better calibrated model/objective, not just threshold tweaking.

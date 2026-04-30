@@ -58,10 +58,11 @@ antibot-ranker calibrate --epochs 4
 antibot-ranker calibrate-family --epochs 4
 antibot-ranker validate-gate --epochs 4 --holdout-source manual_label
 antibot-ranker validate-balanced --epochs 4 --manual-calibration-ratio 0.5
+antibot-ranker validate-safety --epochs 4 --accepted-penalty 25
 pytest
 ```
 
-Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is available through `antibot-ranker split-eval`; rule-vs-AI comparison is available through `antibot-ranker benchmark`, and global threshold sweep is available through `antibot-ranker calibrate`; family-aware threshold sweep is available through `antibot-ranker calibrate-family`; dev-selected validation gating is available through `antibot-ranker validate-gate`; balanced manual calibration/test evaluation is available through `antibot-ranker validate-balanced`. Numeric-aware and OCR-alias features are included for digits, number words, roman numerals, simple math expressions, short words, and leetspeak-style forms.
+Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is available through `antibot-ranker split-eval`; rule-vs-AI comparison is available through `antibot-ranker benchmark`, and global threshold sweep is available through `antibot-ranker calibrate`; family-aware threshold sweep is available through `antibot-ranker calibrate-family`; dev-selected validation gating is available through `antibot-ranker validate-gate`; balanced manual calibration/test evaluation is available through `antibot-ranker validate-balanced`; safety-objective validation is available through `antibot-ranker validate-safety`. Numeric-aware and OCR-alias features are included for digits, number words, roman numerals, simple math expressions, short words, and leetspeak-style forms.
 
 Default paths assume this repo lives at:
 

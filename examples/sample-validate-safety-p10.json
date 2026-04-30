@@ -1,0 +1,22 @@
+{
+  "accepted_penalty": 10,
+  "selected_thresholds": {
+    "animals": 1.0,
+    "leetspeak": 0.1,
+    "number_words": 1.0,
+    "numeric": 1.0,
+    "short_words": 0.1,
+    "words": 0.25
+  },
+  "calibration_deltas": {"accepted_regressions": 1, "manual_gains": 21, "manual_regressions": 0},
+  "real_test_metrics": {
+    "rule": "187/187 = 100.00%",
+    "ai": "178/187 = 95.19%",
+    "hybrid": "179/187 = 95.72%"
+  },
+  "manual_test_metrics": {
+    "rule": "9/44 = 20.45%",
+    "ai": "39/44 = 88.64%",
+    "hybrid": "37/44 = 84.09%"
+  }
+}
