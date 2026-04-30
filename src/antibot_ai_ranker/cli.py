@@ -9,7 +9,7 @@ from .train import default_weights, evaluate_examples, save_model, train_percept
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="claimcoin-ranker")
+    parser = argparse.ArgumentParser(prog="antibot-ranker")
     sub = parser.add_subparsers(dest="cmd", required=True)
     sub.add_parser("summary")
     train = sub.add_parser("train")

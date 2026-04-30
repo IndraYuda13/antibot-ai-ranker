@@ -35,8 +35,8 @@ def load_capture(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
 
 
-def _case_id(attempt_id: int) -> str:
-    return f"claimcoin_{attempt_id:06d}"
+def _case_id(attempt_id: int, prefix: str) -> str:
+    return f"{prefix}_{attempt_id:06d}"
 
 
 def _manual_labels(paths: SourcePaths) -> dict[str, list[str]]:
@@ -60,8 +60,8 @@ def load_examples(paths: SourcePaths | None = None, *, include_weak: bool = True
     rows = con.execute("select id, verdict, capture_path from antibot_attempts order by id asc").fetchall()
     for attempt_id_raw, verdict, capture_rel in rows:
         attempt_id = int(attempt_id_raw)
-        cid = _case_id(attempt_id)
-        capture_path = paths.claimcoin_root / str(capture_rel)
+        cid = _case_id(attempt_id, paths.case_prefix)
+        capture_path = paths.source_root / str(capture_rel)
         if not capture_path.exists():
             continue
         capture = load_capture(capture_path)

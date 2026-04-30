@@ -2,12 +2,13 @@
 
 ## 2026-04-30
 
-- Created standalone ClaimCoin AntiBot AI ranker research repo.
+- Renamed project branding from target-specific naming to universal `Antibot AI Ranker`.
+- Created standalone Antibot AI ranker research repo.
 - Added Superpowers design spec.
-- Added dataset loader for ClaimCoin SQLite attempts, capture JSON, accepted-success weak labels, and manual labels.
+- Added dataset loader for Antibot SQLite attempts, capture JSON, accepted-success weak labels, and manual labels.
 - Added stdlib-only feature ranker baseline with CLI commands:
-  - `claimcoin-ranker summary`
-  - `claimcoin-ranker train`
-  - `claimcoin-ranker evaluate`
+  - `antibot-ranker summary`
+  - `antibot-ranker train`
+  - `antibot-ranker evaluate`
 - Added tests for text normalization, path resolution, and simple rank prediction.
-- First local baseline reached about `95.23%` replay accuracy on current imported examples. This is research-only and not a production claim.
+- First local baseline reached about `95.75%` replay accuracy on current imported examples after refresh. This is research-only and not a production claim.

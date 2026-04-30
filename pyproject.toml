@@ -3,23 +3,23 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "claimcoin-antibot-ai-ranker"
+name = "antibot-ai-ranker"
 version = "0.1.0"
-description = "Research baseline for learning ClaimCoin AntiBot option ordering from OCR/debug data."
+description = "Research baseline for learning Antibot option ordering from OCR/debug data."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Indra Yuda" }]
-keywords = ["claimcoin", "antibot", "ranker", "ocr", "ml"]
+keywords = ["antibot", "ranker", "ocr", "ml"]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Programming Language :: Python :: 3",
 ]
 
 [project.scripts]
-claimcoin-ranker = "claimcoin_antibot_ai_ranker.cli:main"
+antibot-ranker = "antibot_ai_ranker.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/claimcoin_antibot_ai_ranker"]
+packages = ["src/antibot_ai_ranker"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

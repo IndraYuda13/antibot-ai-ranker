@@ -1,4 +1,4 @@
-from claimcoin_antibot_ai_ranker.textnorm import clean, similarity
+from antibot_ai_ranker.textnorm import clean, similarity
 
 
 def test_clean_leet_text():

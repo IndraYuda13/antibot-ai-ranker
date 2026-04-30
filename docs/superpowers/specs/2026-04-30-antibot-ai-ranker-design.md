@@ -1,15 +1,15 @@
-# ClaimCoin AntiBot AI Ranker Design
+# Antibot AI Ranker Design
 
 ## Goal
-Build a separate research repo for a ClaimCoin AntiBot ranking model. The current production solver repo stays untouched except for future explicit integration. This project learns from existing live captures and manual labels, then predicts the most likely correct option order from OCR/debug features.
+Build a separate research repo for an Antibot ranking model. The current production solver repo stays untouched except for future explicit integration. This project learns from existing live captures and manual labels, then predicts the most likely correct option order from OCR/debug features.
 
 ## Scope
 Initial scope is a feature-based ranker, not a full vision model. The first model consumes OCR candidates, normalized forms, matcher scores, token/option similarities, and label/accepted-success ground truth. The target is to rerank existing solver outputs and identify low-confidence cases before production use.
 
 ## Data Sources
-- ClaimCoin SQLite attempts from `projects/claimcoin-autoclaim/state/claimcoin.sqlite3`.
+- Antibot SQLite attempts from a configurable source adapter.
 - Raw capture JSON files referenced by the DB.
-- Manual labels from `projects/antibot-image-solver/state/antibot-labeling/labeled`.
+- Manual labels from a configurable solver label directory.
 - Accepted-success attempts can be used as weak ground truth because the website accepted the submitted order.
 
 ## Architecture

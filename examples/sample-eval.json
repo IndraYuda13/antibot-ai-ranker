@@ -1,16 +1,16 @@
 {
-  "total": 1195,
-  "ok": 1138,
-  "wrong": 57,
-  "accuracy": 95.23,
+  "total": 1201,
+  "ok": 1150,
+  "wrong": 51,
+  "accuracy": 95.75,
   "by_source": {
     "accepted_success_raw": {
-      "total": 1108,
-      "ok": 1077
+      "total": 1114,
+      "ok": 1088
     },
     "manual_label": {
       "total": 87,
-      "ok": 61
+      "ok": 62
     }
   }
 }

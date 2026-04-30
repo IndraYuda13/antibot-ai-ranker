@@ -1,8 +1,8 @@
-# ClaimCoin AntiBot AI Ranker
+# Antibot AI Ranker
 
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue) ![Status](https://img.shields.io/badge/status-research-orange) ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 
-Research repo for learning better option ordering on ClaimCoin-style AntiBot image challenges.
+Research repo for learning better option ordering on antibotlink-style AntiBot image challenges.
 
 This project is intentionally separate from the live solver. It imports existing captures and labels, builds a dataset, and trains a transparent baseline ranker first. The goal is to prove whether the current data can improve live ordering before moving to larger models or Google Colab GPU training.
 
@@ -12,7 +12,7 @@ The current rule-based solver can replay labeled data cleanly, but live traffic 
 
 ## Current strategy
 
-1. Import ClaimCoin attempts and capture JSON.
+1. Import antibot attempts and capture JSON from a source adapter.
 2. Merge manual labels when present.
 3. Treat accepted-success attempts as weak ground truth.
 4. Extract token-option similarity features.
@@ -34,10 +34,10 @@ That is useful for a first ranker, but not enough to honestly promise 100% live 
 
 Current stdlib-only ranker baseline on the available local data:
 
-- Total imported examples: `1195`
-- Replay OK: `1138`
-- Wrong: `57`
-- Accuracy: `95.23%`
+- Total imported examples: `1201`
+- Replay OK: `1150`
+- Wrong: `51`
+- Accuracy: `95.75%`
 
 This is a baseline, not the final model. It proves the project can load the data, train a simple ranker, and produce measurable eval output.
 
@@ -47,9 +47,9 @@ This is a baseline, not the final model. It proves the project can load the data
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -e . pytest
-claimcoin-ranker summary
-claimcoin-ranker train --output artifacts/model.json
-claimcoin-ranker evaluate --model artifacts/model.json
+antibot-ranker summary
+antibot-ranker train --output artifacts/model.json
+antibot-ranker evaluate --model artifacts/model.json
 pytest
 ```
 
@@ -57,12 +57,14 @@ Sample outputs are stored in [`examples/`](examples/).
 
 Default paths assume this repo lives at:
 
-`/root/.openclaw/workspace/projects/claimcoin-antibot-ai-ranker`
+`/root/.openclaw/workspace/projects/antibot-ai-ranker`
 
-and source data lives in sibling projects:
+and source data is configured through environment variables if the default local adapter is not present:
 
-- `../claimcoin-autoclaim`
-- `../antibot-image-solver`
+- `ANTIBOT_RANKER_SOURCE_ROOT`
+- `ANTIBOT_RANKER_SOLVER_ROOT`
+- `ANTIBOT_RANKER_DB_NAME`
+- `ANTIBOT_RANKER_CASE_PREFIX`
 
 ## Roadmap
 

@@ -1,11 +1,11 @@
 {
-  "total_examples": 1195,
+  "total_examples": 1201,
   "by_source": {
-    "accepted_success_raw": 1108,
+    "accepted_success_raw": 1114,
     "manual_label": 87
   },
   "option_counts": {
-    "3": 1194,
+    "3": 1200,
     "2": 1
   }
 }
