@@ -53,6 +53,8 @@ claimcoin-ranker evaluate --model artifacts/model.json
 pytest
 ```
 
+Sample outputs are stored in [`examples/`](examples/).
+
 Default paths assume this repo lives at:
 
 `/root/.openclaw/workspace/projects/claimcoin-antibot-ai-ranker`
@@ -64,11 +66,7 @@ and source data lives in sibling projects:
 
 ## Roadmap
 
-- Baseline feature ranker
-- Error analysis against manual labels
-- Synthetic antibotlink-like generator
-- Optional Colab T4 training for neural ranker or vision model
-- Production integration only after offline and live-soak gates pass
+See [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Boundary
 

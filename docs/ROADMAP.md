@@ -1,0 +1,32 @@
+# Roadmap
+
+## Phase 1: Baseline ranker
+
+- Load live captures and labels from sibling projects.
+- Train a stdlib-only pairwise ranker.
+- Produce replay metrics and failure samples.
+- Keep production solver untouched.
+
+## Phase 2: Better offline science
+
+- Add train/validation split by attempt id to avoid memorizing recent patterns.
+- Compare current rule solver vs AI ranker on the same cases.
+- Add confidence calibration so low-confidence predictions can be flagged.
+- Add per-family error reports for numbers, short words, animal words, object words, and leetspeak.
+
+## Phase 3: Synthetic data lab
+
+- Generate antibotlink-like question and option images.
+- Support 3-option and 4-option layouts.
+- Randomize font, color, rotation, blur, noise, compression, punctuation, and leetspeak.
+- Export perfect labels automatically.
+
+## Phase 4: Colab GPU lane
+
+- Train a neural reranker or small vision model on synthetic + real data.
+- Use Colab T4 only after the dataset generator and eval gates are stable.
+
+## Phase 5: Production integration gate
+
+- Integrate only if held-out manual labels improve over current solver.
+- Require live post-restart soak window before promoting any model path.
