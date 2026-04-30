@@ -15,6 +15,14 @@ class PairFeatures:
     values: dict[str, float]
 
 
+@dataclass(frozen=True)
+class OrderPrediction:
+    order: list[str]
+    confidence: float
+    best_score: float
+    second_best_score: float
+
+
 def token_sets(question_ocr: list[str], option_count: int) -> list[list[str]]:
     out: list[list[str]] = []
     seen: set[tuple[str, ...]] = set()
@@ -53,9 +61,18 @@ def score_pair(weights: dict[str, float], features: dict[str, float]) -> float:
     return sum(weights.get(k, 0.0) * v for k, v in features.items())
 
 
-def predict_order(example: Example, weights: dict[str, float]) -> list[str]:
+def _confidence(best_score: float, second_best_score: float) -> float:
+    if best_score <= 0:
+        return 0.0
+    gap = max(0.0, best_score - second_best_score) / max(abs(best_score), 1e-9)
+    strength = min(1.0, abs(best_score) / 10.0)
+    return round(max(0.0, min(1.0, 0.65 * gap + 0.35 * strength)), 4)
+
+
+def predict_order_scored(example: Example, weights: dict[str, float]) -> OrderPrediction:
     best_order: list[str] = []
     best_score = float("-inf")
+    second_best_score = float("-inf")
     option_ids = list(example.option_ocr.keys())
     for tokens in token_sets(example.question_ocr, len(option_ids)):
         if len(tokens) != len(option_ids):
@@ -65,6 +82,18 @@ def predict_order(example: Example, weights: dict[str, float]) -> list[str]:
             for token, option_id in zip(tokens, perm):
                 score += score_pair(weights, pair_features(token, example.option_ocr[option_id]))
             if score > best_score:
+                second_best_score = best_score
                 best_score = score
                 best_order = list(perm)
-    return best_order or option_ids
+            elif score > second_best_score:
+                second_best_score = score
+    if second_best_score == float("-inf"):
+        second_best_score = 0.0
+    if not best_order:
+        best_order = option_ids
+        best_score = 0.0
+    return OrderPrediction(best_order, _confidence(best_score, second_best_score), best_score, second_best_score)
+
+
+def predict_order(example: Example, weights: dict[str, float]) -> list[str]:
+    return predict_order_scored(example, weights).order

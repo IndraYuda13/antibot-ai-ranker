@@ -1,0 +1,10 @@
+{
+  "best_threshold": 0.1,
+  "rule": {"total": 1275, "ok": 1206, "wrong": 69, "accuracy": 94.59},
+  "ai": {"total": 1275, "ok": 1210, "wrong": 65, "accuracy": 94.90},
+  "hybrid": {"total": 1275, "ok": 1226, "wrong": 49, "accuracy": 96.16},
+  "by_source_accuracy": {
+    "accepted_success_raw": {"rule": 100.0, "ai": 96.8, "hybrid": 99.33},
+    "manual_label": {"rule": 20.69, "ai": 68.97, "hybrid": 52.87}
+  }
+}

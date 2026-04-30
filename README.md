@@ -54,10 +54,11 @@ antibot-ranker train --output artifacts/model.json
 antibot-ranker evaluate --model artifacts/model.json
 antibot-ranker split-eval --epochs 4 --holdout-source manual_label
 antibot-ranker benchmark --epochs 4
+antibot-ranker calibrate --epochs 4
 pytest
 ```
 
-Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is available through `antibot-ranker split-eval`; rule-vs-AI comparison is available through `antibot-ranker benchmark`.
+Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is available through `antibot-ranker split-eval`; rule-vs-AI comparison is available through `antibot-ranker benchmark`, and threshold sweep is available through `antibot-ranker calibrate`.
 
 Default paths assume this repo lives at:
 

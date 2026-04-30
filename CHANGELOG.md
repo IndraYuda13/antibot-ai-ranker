@@ -14,4 +14,5 @@
 - First local baseline reached about `95.75%` replay accuracy on current imported examples after refresh.
 - Added synthetic AntiBotLinks-style dataset generator v1 with 3-option and 4-option support.
 - Added split-aware train/dev/test evaluation with optional manual-label holdout and synthetic JSONL mixing.
-- Added rule-vs-AI-vs-hybrid benchmark CLI and sample outputs. This is research-only and not a production claim.
+- Added rule-vs-AI-vs-hybrid benchmark CLI and sample outputs.
+- Added confidence/threshold sweep CLI and sample calibration outputs. This is research-only and not a production claim.

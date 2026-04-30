@@ -140,7 +140,7 @@ Generator should support:
 3. Add dataset loader for synthetic JSONL. ✅ v1 done.
 4. Add split-aware evaluation: train/dev/test by challenge ID and source type. ✅ v1 done.
 5. Current split-eval smoke: real test `170/177` (`96.05%`), manual-label heldout `60/87` (`68.97%`), synthetic smoke test `32/60` (`53.33%`). These numbers show the baseline ranker is not strong enough yet for production; next step is better features/model and rule-solver comparison.
-6. Add rule-solver vs AI-ranker benchmark on the same cases. ✅ v1 done. Current same-set benchmark: rule `1200/1269` (`94.56%`), AI `1216/1269` (`95.82%`). Manual labels only: rule `18/87` (`20.69%`), AI `59/87` (`67.82%`). Important caveat: this is not held-out proof yet; it shows the AI can help hard/manual cases but hurts some accepted-success raw cases, so confidence gating is the next priority.
+6. Add rule-solver vs AI-ranker benchmark on the same cases. ✅ v1 done. Current same-set benchmark: rule `1200/1269` (`94.56%`), AI `1216/1269` (`95.82%`). Manual labels only: rule `18/87` (`20.69%`), AI `59/87` (`67.82%`). Important caveat: this is not held-out proof yet; it shows the AI can help hard/manual cases but hurts some accepted-success raw cases. Threshold sweep v1 found best all-data hybrid at threshold `0.1`: hybrid `1226/1275` (`96.16%`), accepted raw `99.33%`, manual label `52.87%`. Manual-only still prefers trusting AI (`59/87`, `67.82%`). This means a single global confidence threshold is not enough; next step is source/family-aware confidence and better calibrated margins.
 6. After synthetic v1 works, use Colab T4 for neural ranker experiments.
 
 ### Production gate
