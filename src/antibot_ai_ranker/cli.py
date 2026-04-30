@@ -4,7 +4,9 @@ import argparse
 import json
 from pathlib import Path
 
+from .benchmark import benchmark_orders
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
+from .features import predict_order
 from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
 from .train import default_weights, evaluate_examples, save_model, train_perceptron
@@ -32,6 +34,11 @@ def main() -> None:
     split_eval.add_argument("--holdout-source", action="append", default=[])
     split_eval.add_argument("--synthetic-jsonl", action="append", default=[])
     split_eval.add_argument("--synthetic-only", action="store_true")
+    bench = sub.add_parser("benchmark")
+    bench.add_argument("--epochs", type=int, default=8)
+    bench.add_argument("--threshold", type=float, default=0.9)
+    bench.add_argument("--limit", type=int)
+    bench.add_argument("--source", action="append", default=[])
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -52,6 +59,21 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "benchmark":
+        examples = load_examples()
+        if args.source:
+            allowed = set(args.source)
+            examples = [ex for ex in examples if ex.source in allowed]
+        if args.limit:
+            examples = examples[: args.limit]
+        weights = train_perceptron(examples, epochs=args.epochs)
+        predictions = {ex.case_id: predict_order(ex, weights) for ex in examples}
+        # Current baseline ranker has no calibrated confidence yet. Use 1.0 so
+        # hybrid shows the maximum possible impact of trusting AI disagreements.
+        confidences = {ex.case_id: 1.0 for ex in examples}
+        print(json.dumps(benchmark_orders(examples, predictions, ai_confidences=confidences, threshold=args.threshold), indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "generate-synthetic":

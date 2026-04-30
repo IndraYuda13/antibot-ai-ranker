@@ -19,6 +19,7 @@ class Example:
     question_ocr: list[str]
     option_ocr: dict[str, list[str]]
     expected_order: list[str]
+    solver_order: list[str] | None = None
 
     @property
     def option_ids(self) -> list[str]:
@@ -79,7 +80,8 @@ def load_examples(paths: SourcePaths | None = None, *, include_weak: bool = True
         else:
             continue
         if expected:
-            examples.append(Example(cid, attempt_id, source, str(verdict), capture_path, question, options, expected))
+            solver_order = _split_order((capture.get("solver") or {}).get("ordered_ids") or (capture.get("solver") or {}).get("antibotlinks"))
+            examples.append(Example(cid, attempt_id, source, str(verdict), capture_path, question, options, expected, solver_order))
     return examples
 
 

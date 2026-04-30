@@ -1,0 +1,9 @@
+{
+  "rule": {"total": 1269, "ok": 1200, "wrong": 69, "accuracy": 94.56},
+  "ai": {"total": 1269, "ok": 1216, "wrong": 53, "accuracy": 95.82},
+  "hybrid": {"total": 1269, "ok": 1216, "wrong": 53, "accuracy": 95.82},
+  "by_source_accuracy": {
+    "accepted_success_raw": {"rule": 100.0, "ai": 97.63, "hybrid": 97.63},
+    "manual_label": {"rule": 20.69, "ai": 71.26, "hybrid": 71.26}
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "rule": {"total": 87, "ok": 18, "wrong": 69, "accuracy": 20.69},
+  "ai": {"total": 87, "ok": 59, "wrong": 28, "accuracy": 67.82},
+  "hybrid": {"total": 87, "ok": 59, "wrong": 28, "accuracy": 67.82}
+}
