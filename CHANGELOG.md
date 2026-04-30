@@ -25,3 +25,5 @@
 - Added learned override-gate validation to decide when AI may replace rule order. This is research-only and not a production claim.
 
 - Added multi-seed override validation to measure split stability.
+
+- Added conservative override threshold calibration and multi-seed conservative mode.

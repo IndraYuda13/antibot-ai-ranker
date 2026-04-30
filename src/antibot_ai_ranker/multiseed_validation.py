@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from .dataset import Example
-from .override_validation import override_gate_report
+from .override_validation import conservative_override_gate_report, override_gate_report
 
 
 def _stat(values: list[float]) -> dict[str, float]:
@@ -39,15 +39,19 @@ def multiseed_override_report(
     epochs: int = 8,
     manual_calibration_ratio: float = 0.5,
     override_epochs: int = 25,
+    conservative: bool = False,
+    min_accepted_accuracy: float = 100.0,
 ) -> dict[str, object]:
     seed_list = list(seeds)
+    report_fn = conservative_override_gate_report if conservative else override_gate_report
     runs = [
-        override_gate_report(
+        report_fn(
             examples,
             epochs=epochs,
             seed=seed,
             manual_calibration_ratio=manual_calibration_ratio,
             override_epochs=override_epochs,
+            **({"min_accepted_accuracy": min_accepted_accuracy} if conservative else {}),
         )
         for seed in seed_list
     ]
@@ -56,6 +60,8 @@ def multiseed_override_report(
         "epochs": epochs,
         "manual_calibration_ratio": manual_calibration_ratio,
         "override_epochs": override_epochs,
+        "conservative": conservative,
+        "min_accepted_accuracy": min_accepted_accuracy if conservative else None,
         "runs": runs,
         "summary": summarize_multiseed(runs),
     }

@@ -1,0 +1,9 @@
+{
+  "seeds": [11, 22, 33, 44, 55],
+  "summary": {
+    "real_hybrid_accuracy": {"min": 97.35, "mean": 99.47, "max": 100.0},
+    "manual_hybrid_accuracy": {"min": 72.73, "mean": 78.64, "max": 84.09},
+    "real_rule_accuracy": {"min": 100.0, "mean": 100.0, "max": 100.0},
+    "manual_rule_accuracy": {"min": 13.64, "mean": 19.55, "max": 27.27}
+  }
+}

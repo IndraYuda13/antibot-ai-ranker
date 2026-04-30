@@ -4,7 +4,7 @@ from .balanced_validation import split_manual_calibration
 from .benchmark import benchmark_orders
 from .dataset import Example
 from .features import predict_order_scored
-from .override import build_override_examples, override_features, predict_override, train_override_classifier
+from .override import build_override_examples, calibrate_override_threshold, override_features, predict_override, train_override_classifier
 from .train import train_perceptron
 
 
@@ -27,6 +27,43 @@ def _apply_override_model(examples: list[Example], predictions: dict[str, list[s
     return gated
 
 
+def _report_from_model(
+    split,
+    ranker_weights: dict[str, float],
+    override_model,
+    *,
+    seed: int,
+    epochs: int,
+    manual_calibration_ratio: float,
+    override_training_examples: int,
+) -> dict[str, object]:
+    cal_pred, cal_conf = _predict(split.calibration, ranker_weights)
+    real_pred, real_conf = _predict(split.real_test, ranker_weights)
+    manual_pred, manual_conf = _predict(split.manual_test, ranker_weights)
+    cal_gated = _apply_override_model(split.calibration, cal_pred, cal_conf, override_model)
+    real_gated = _apply_override_model(split.real_test, real_pred, real_conf, override_model)
+    manual_gated = _apply_override_model(split.manual_test, manual_pred, manual_conf, override_model)
+    return {
+        "seed": seed,
+        "epochs": epochs,
+        "manual_calibration_ratio": manual_calibration_ratio,
+        "override_training_examples": override_training_examples,
+        "selected_override_threshold": override_model.threshold,
+        "counts": {
+            "real_train": len(split.real_train),
+            "real_dev": len(split.real_dev),
+            "real_test": len(split.real_test),
+            "manual_calibration": len(split.manual_calibration),
+            "manual_test": len(split.manual_test),
+            "calibration_total": len(split.calibration),
+            "total": len(split.real_train) + len(split.real_dev) + len(split.real_test) + len(split.manual_calibration) + len(split.manual_test),
+        },
+        "calibration_metrics": benchmark_orders(split.calibration, cal_gated, ai_confidences={k: 1.0 for k in cal_gated}, threshold=0.5),
+        "real_test_metrics": benchmark_orders(split.real_test, real_gated, ai_confidences={k: 1.0 for k in real_gated}, threshold=0.5),
+        "manual_test_metrics": benchmark_orders(split.manual_test, manual_gated, ai_confidences={k: 1.0 for k in manual_gated}, threshold=0.5),
+    }
+
+
 def override_gate_report(
     examples: list[Example],
     *,
@@ -42,29 +79,46 @@ def override_gate_report(
     override_rows = build_override_examples(split.calibration, cal_pred, cal_conf)
     override_model = train_override_classifier(override_rows, epochs=override_epochs)
 
-    real_pred, real_conf = _predict(split.real_test, ranker_weights)
-    manual_pred, manual_conf = _predict(split.manual_test, ranker_weights)
-    cal_gated = _apply_override_model(split.calibration, cal_pred, cal_conf, override_model)
-    real_gated = _apply_override_model(split.real_test, real_pred, real_conf, override_model)
-    manual_gated = _apply_override_model(split.manual_test, manual_pred, manual_conf, override_model)
+    return _report_from_model(
+        split,
+        ranker_weights,
+        override_model,
+        seed=seed,
+        epochs=epochs,
+        manual_calibration_ratio=manual_calibration_ratio,
+        override_training_examples=len(override_rows),
+    )
 
-    # Treat gated predictions as AI predictions with confidence 1.0 so benchmark's
-    # hybrid column equals the override model's final order.
-    return {
-        "seed": seed,
-        "epochs": epochs,
-        "manual_calibration_ratio": manual_calibration_ratio,
-        "override_training_examples": len(override_rows),
-        "counts": {
-            "real_train": len(split.real_train),
-            "real_dev": len(split.real_dev),
-            "real_test": len(split.real_test),
-            "manual_calibration": len(split.manual_calibration),
-            "manual_test": len(split.manual_test),
-            "calibration_total": len(split.calibration),
-            "total": len(split.real_train) + len(split.real_dev) + len(split.real_test) + len(split.manual_calibration) + len(split.manual_test),
-        },
-        "calibration_metrics": benchmark_orders(split.calibration, cal_gated, ai_confidences={k: 1.0 for k in cal_gated}, threshold=0.5),
-        "real_test_metrics": benchmark_orders(split.real_test, real_gated, ai_confidences={k: 1.0 for k in real_gated}, threshold=0.5),
-        "manual_test_metrics": benchmark_orders(split.manual_test, manual_gated, ai_confidences={k: 1.0 for k in manual_gated}, threshold=0.5),
-    }
+
+def conservative_override_gate_report(
+    examples: list[Example],
+    *,
+    epochs: int = 8,
+    seed: int = 1337,
+    manual_calibration_ratio: float = 0.5,
+    override_epochs: int = 25,
+    min_accepted_accuracy: float = 100.0,
+) -> dict[str, object]:
+    split = split_manual_calibration(examples, manual_calibration_ratio=manual_calibration_ratio, seed=seed)
+    ranker_weights = train_perceptron(split.train, epochs=epochs, seed=seed)
+    cal_pred, cal_conf = _predict(split.calibration, ranker_weights)
+    override_rows = build_override_examples(split.calibration, cal_pred, cal_conf)
+    override_model = train_override_classifier(override_rows, epochs=override_epochs)
+    calibrated_model = calibrate_override_threshold(
+        override_model,
+        split.calibration,
+        cal_pred,
+        cal_conf,
+        min_accepted_accuracy=min_accepted_accuracy,
+    )
+    report = _report_from_model(
+        split,
+        ranker_weights,
+        calibrated_model,
+        seed=seed,
+        epochs=epochs,
+        manual_calibration_ratio=manual_calibration_ratio,
+        override_training_examples=len(override_rows),
+    )
+    report["min_accepted_accuracy"] = min_accepted_accuracy
+    return report

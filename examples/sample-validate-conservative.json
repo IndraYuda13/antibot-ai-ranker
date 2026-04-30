@@ -1,0 +1,14 @@
+{
+  "selected_override_threshold": 0.02,
+  "override_training_examples": 24,
+  "real_test_metrics": {
+    "rule": "189/189 = 100.00%",
+    "ai": "187/189 = 98.94%",
+    "hybrid": "187/189 = 98.94%"
+  },
+  "manual_test_metrics": {
+    "rule": "9/44 = 20.45%",
+    "ai": "39/44 = 88.64%",
+    "hybrid": "39/44 = 88.64%"
+  }
+}

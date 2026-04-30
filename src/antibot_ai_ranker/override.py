@@ -93,3 +93,37 @@ def override_probability(model: OverrideModel, features: Mapping[str, float]) ->
 
 def predict_override(model: OverrideModel, features: Mapping[str, float]) -> bool:
     return override_probability(model, features) >= model.threshold
+
+
+def calibrate_override_threshold(
+    model: OverrideModel,
+    examples: list[Example],
+    ai_predictions: Mapping[str, list[str]],
+    confidences: Mapping[str, float],
+    *,
+    thresholds: list[float] | None = None,
+    min_accepted_accuracy: float = 100.0,
+) -> OverrideModel:
+    thresholds = thresholds or [i / 100 for i in range(0, 101)]
+    best: tuple[float, float, float] | None = None
+    for threshold in thresholds:
+        accepted_total = accepted_ok = manual_total = manual_ok = 0
+        candidate = OverrideModel(dict(model.weights), threshold=float(threshold))
+        for ex in examples:
+            ai_order = list(ai_predictions.get(ex.case_id) or [])
+            final_order = ai_order if predict_override(candidate, override_features(ex, ai_order, float(confidences.get(ex.case_id, 0.0)))) else list(ex.solver_order or [])
+            ok = final_order == list(ex.expected_order)
+            if ex.source == "accepted_success_raw":
+                accepted_total += 1
+                accepted_ok += int(ok)
+            elif ex.source == "manual_label":
+                manual_total += 1
+                manual_ok += int(ok)
+        accepted_accuracy = 100.0 if not accepted_total else (accepted_ok / accepted_total) * 100
+        manual_accuracy = 0.0 if not manual_total else (manual_ok / manual_total) * 100
+        safe = accepted_accuracy >= min_accepted_accuracy
+        score = (1.0 if safe else 0.0, manual_accuracy, accepted_accuracy)
+        if best is None or score > best:
+            best = score
+            best_threshold = float(threshold)
+    return OverrideModel(dict(model.weights), threshold=best_threshold)

@@ -40,3 +40,6 @@ Status: v1 implemented.
 
 - [x] Add multi-seed override validation to test split stability.
 - [ ] Add more disagreement labels before live soak.
+
+- [x] Add conservative override threshold calibration.
+- [ ] Collect more accepted/raw disagreement negatives because calibration-only safety still misses heldout raw regressions.

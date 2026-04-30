@@ -191,3 +191,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Multi-seed learned override validation v1
 
 `validate-multiseed --epochs 4 --override-epochs 40 --seeds 11,22,33,44,55` shows the learned override gate is promising but not yet production-safe. Across five seeds, real accepted hybrid accuracy was min `96.83%`, mean `99.37%`, max `100%`; manual hard hybrid accuracy was min `72.73%`, mean `78.64%`, max `84.09%`. Rule stayed `100%` on real accepted test and only mean `19.55%` on manual hard test. The override gate is a strong offline improvement over rule on hard cases, but seed 22 exposed accepted raw regression, so the next step is more disagreement data plus a stricter production gate before any solver integration.
+
+
+### Conservative override calibration v1
+
+`validate-conservative` calibrates the override model decision threshold on the calibration split with a minimum accepted/raw accuracy constraint. The single-seed result selected threshold `0.02`, with real accepted hybrid `187/189` (`98.94%`) and manual hard hybrid `39/44` (`88.64%`). Multi-seed conservative validation improved the real accepted minimum from `96.83%` to `97.35%`, mean `99.47%`, but still did not guarantee `100%` heldout accepted/raw. This proves calibration split safety alone is insufficient because the current calibration data does not contain enough accepted/raw disagreement negatives. Next work should collect more disagreement labels and add an explicit conservative fallback for unseen family/source patterns before production integration.
