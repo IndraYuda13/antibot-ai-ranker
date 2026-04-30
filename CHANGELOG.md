@@ -37,3 +37,5 @@
 - Added shadow/no-submit JSON contract and `shadow-export` CLI for safe future soak testing.
 
 - Added `shadow-provider` stdin/stdout command compatible with the solver external provider hook.
+
+- Added persisted disagreement-gate artifact export/load path and wired `shadow-provider --artifact`.

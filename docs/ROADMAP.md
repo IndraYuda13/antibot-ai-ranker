@@ -58,3 +58,6 @@ Status: v1 implemented.
 
 - [x] Add `shadow-provider` stdin/stdout command compatible with `antibot-image-solver` external provider hook.
 - [ ] Replace conservative default-weights provider with persisted trained disagreement-gate artifact before live soak.
+
+- [x] Add train/export/load path for persisted disagreement-gate artifact.
+- [ ] Run live no-submit soak with `ANTIBOT_RANKER_SHADOW_PROVIDER` pointing at `shadow-provider --artifact ...`.

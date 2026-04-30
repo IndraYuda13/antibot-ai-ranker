@@ -221,3 +221,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Shadow provider command v1
 
 `antibot-ranker shadow-provider` now reads `antibot-image-solver.ranker-shadow.v1` JSON from stdin and returns provider fields (`shadow_order`, `would_override`, `override_probability`, `ai_confidence`, `provider`) on stdout. Smoke through the solver hook preserved production `ordered_ids=[a,b,c]`, logged `status=provider_decision_logged`, and kept `no_submit=true`. This wires the two repos at the contract level. Current provider intentionally uses the ranker default weights only and does not yet load a persisted disagreement-gate artifact, so it is suitable for contract smoke, not live production override.
+
+
+### Persisted disagreement-gate artifact + provider load v1
+
+`train-gate-artifact --epochs 4 --gate-epochs 80 --negative-weight 8 --output artifacts/disagreement-gate-v1.json` exports schema `antibot-ai-ranker.disagreement-gate.v1` with ranker weights, override-gate weights, threshold, and metadata. The first artifact used seed `1337`, override training rows `43`, train pool `1195`. `shadow-provider --artifact artifacts/disagreement-gate-v1.json` now loads the artifact and returns artifact-gated fields to the solver shadow hook. Cross-repo smoke through `antibot-image-solver` preserved production `ordered_ids=[a,c,b]`, logged `provider_decision_logged`, `no_submit=true`, and `override_probability=0.247895`. This is now ready for a live no-submit shadow soak, not production override.

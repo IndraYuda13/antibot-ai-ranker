@@ -15,6 +15,7 @@ from .disagreement_gate import train_disagreement_gate_report
 from .disagreements import mine_disagreements, summarize_disagreements
 from .fast_disagreement_multiseed import fast_disagreement_multiseed_report
 from .features import predict_order, predict_order_scored
+from .gate_artifact import export_gate_artifact
 from .provider import build_provider_decision
 from .shadow_report import build_shadow_report
 from .splits import train_dev_test_report
@@ -121,8 +122,33 @@ def main() -> None:
     shadow.add_argument("--seed", type=int, default=1337)
     shadow.add_argument("--limit", type=int)
     shadow.add_argument("--output", default="artifacts/shadow-report.json")
-    sub.add_parser("shadow-provider")
+    artifact = sub.add_parser("train-gate-artifact")
+    artifact.add_argument("--epochs", type=int, default=4)
+    artifact.add_argument("--gate-epochs", type=int, default=80)
+    artifact.add_argument("--negative-weight", type=float, default=8.0)
+    artifact.add_argument("--seed", type=int, default=1337)
+    artifact.add_argument("--manual-calibration-ratio", type=float, default=0.5)
+    artifact.add_argument("--limit", type=int)
+    artifact.add_argument("--output", default="artifacts/disagreement-gate.json")
+    provider = sub.add_parser("shadow-provider")
+    provider.add_argument("--artifact")
     args = parser.parse_args()
+
+    if args.cmd == "train-gate-artifact":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        payload = export_gate_artifact(
+            examples,
+            args.output,
+            epochs=args.epochs,
+            gate_epochs=args.gate_epochs,
+            negative_weight=args.negative_weight,
+            seed=args.seed,
+            manual_calibration_ratio=args.manual_calibration_ratio,
+        )
+        print(json.dumps({"output": args.output, "metadata": payload["metadata"]}, indent=2, ensure_ascii=False))
+        return
 
     if args.cmd == "summary":
         print(json.dumps(dataset_summary(), indent=2, ensure_ascii=False))
@@ -146,7 +172,7 @@ def main() -> None:
 
     if args.cmd == "shadow-provider":
         payload = json.loads(sys.stdin.read() or "{}")
-        print(json.dumps(build_provider_decision(payload), ensure_ascii=False))
+        print(json.dumps(build_provider_decision(payload, artifact_path=args.artifact), ensure_ascii=False))
         return
 
     if args.cmd == "shadow-export":

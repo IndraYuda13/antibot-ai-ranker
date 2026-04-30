@@ -96,3 +96,5 @@ Fast disagreement-gate stability validation is available through `antibot-ranker
 Shadow/no-submit export is available through `antibot-ranker shadow-export --epochs 4 --gate-epochs 80 --negative-weight 8 --output artifacts/shadow-report.json`. It writes `antibot-ai-ranker.shadow-report.v1` JSON and never changes/submits production order.
 
 Shadow provider command for `antibot-image-solver` is available through `antibot-ranker shadow-provider`. It reads the solver shadow JSON from stdin and returns no-submit ranker fields on stdout.
+
+Train/export the disagreement gate artifact with `antibot-ranker train-gate-artifact --epochs 4 --gate-epochs 80 --negative-weight 8 --output artifacts/disagreement-gate-v1.json`. Load it from solver shadow mode with `antibot-ranker shadow-provider --artifact artifacts/disagreement-gate-v1.json`.
