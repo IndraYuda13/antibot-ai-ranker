@@ -186,3 +186,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Learned override gate v1
 
 `validate-override` trains a small classifier on calibration disagreements to decide when the AI ranker may override the rule solver. With `manual_calibration_ratio=0.5` and `override_epochs=40`, it learned from `24` override examples. On the current live dataset snapshot, real accepted test stayed at `188/188` (`100%`) and manual hard test improved from rule `9/44` (`20.45%`) to hybrid `39/44` (`88.64%`). This is the first validation lane that preserves accepted raw while capturing almost all current manual hard-case gains. It is still not production-ready because the override classifier only has 24 supervised disagreement examples; next gate should expand disagreement data with synthetic and live soak samples, then repeat split/stability checks across seeds.
+
+
+### Multi-seed learned override validation v1
+
+`validate-multiseed --epochs 4 --override-epochs 40 --seeds 11,22,33,44,55` shows the learned override gate is promising but not yet production-safe. Across five seeds, real accepted hybrid accuracy was min `96.83%`, mean `99.37%`, max `100%`; manual hard hybrid accuracy was min `72.73%`, mean `78.64%`, max `84.09%`. Rule stayed `100%` on real accepted test and only mean `19.55%` on manual hard test. The override gate is a strong offline improvement over rule on hard cases, but seed 22 exposed accepted raw regression, so the next step is more disagreement data plus a stricter production gate before any solver integration.

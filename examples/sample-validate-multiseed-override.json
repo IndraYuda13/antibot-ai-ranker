@@ -1,0 +1,17 @@
+{
+  "seeds": [11, 22, 33, 44, 55],
+  "summary": {
+    "real_hybrid_accuracy": {"min": 96.83, "mean": 99.37, "max": 100.0},
+    "manual_hybrid_accuracy": {"min": 72.73, "mean": 78.64, "max": 84.09},
+    "real_rule_accuracy": {"min": 100.0, "mean": 100.0, "max": 100.0},
+    "manual_rule_accuracy": {"min": 13.64, "mean": 19.55, "max": 27.27},
+    "override_training_examples": {"min": 24.0, "mean": 30.4, "max": 38.0}
+  },
+  "runs": [
+    {"seed": 11, "real_hybrid_accuracy": 100.0, "manual_hybrid_accuracy": 77.27, "override_training_examples": 30},
+    {"seed": 22, "real_hybrid_accuracy": 96.83, "manual_hybrid_accuracy": 79.55, "override_training_examples": 24},
+    {"seed": 33, "real_hybrid_accuracy": 100.0, "manual_hybrid_accuracy": 84.09, "override_training_examples": 31},
+    {"seed": 44, "real_hybrid_accuracy": 100.0, "manual_hybrid_accuracy": 79.55, "override_training_examples": 29},
+    {"seed": 55, "real_hybrid_accuracy": 100.0, "manual_hybrid_accuracy": 72.73, "override_training_examples": 38}
+  ]
+}

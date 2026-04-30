@@ -23,3 +23,5 @@
 - Added balanced manual calibration/test validation CLI for honest hard-case gate evaluation.
 - Added safety-objective gate validation with accepted-raw regression penalty.
 - Added learned override-gate validation to decide when AI may replace rule order. This is research-only and not a production claim.
+
+- Added multi-seed override validation to measure split stability.

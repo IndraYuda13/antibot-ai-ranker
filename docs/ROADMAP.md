@@ -37,3 +37,6 @@ Status: v1 implemented.
 
 - Integrate only if held-out manual labels improve over current solver.
 - Require live post-restart soak window before promoting any model path.
+
+- [x] Add multi-seed override validation to test split stability.
+- [ ] Add more disagreement labels before live soak.
