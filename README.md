@@ -52,10 +52,11 @@ antibot-ranker generate-synthetic --count 10000 --options 3 --output-dir data/sy
 antibot-ranker generate-synthetic --count 10000 --options 4 --output-dir data/synthetic-4opt
 antibot-ranker train --output artifacts/model.json
 antibot-ranker evaluate --model artifacts/model.json
+antibot-ranker split-eval --epochs 4 --holdout-source manual_label
 pytest
 ```
 
-Sample outputs are stored in [`examples/`](examples/).
+Sample outputs are stored in [`examples/`](examples/). Split-aware evaluation is now available through `antibot-ranker split-eval`.
 
 Default paths assume this repo lives at:
 

@@ -4,7 +4,8 @@ import argparse
 import json
 from pathlib import Path
 
-from .dataset import dataset_summary, load_examples
+from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
+from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
 from .train import default_weights, evaluate_examples, save_model, train_perceptron
 
@@ -25,10 +26,32 @@ def main() -> None:
     synth.add_argument("--seed", type=int, default=1337)
     synth.add_argument("--no-noise", action="store_true")
     synth.add_argument("--dark-theme", action="store_true")
+    split_eval = sub.add_parser("split-eval")
+    split_eval.add_argument("--epochs", type=int, default=8)
+    split_eval.add_argument("--seed", type=int, default=1337)
+    split_eval.add_argument("--holdout-source", action="append", default=[])
+    split_eval.add_argument("--synthetic-jsonl", action="append", default=[])
+    split_eval.add_argument("--synthetic-only", action="store_true")
     args = parser.parse_args()
 
     if args.cmd == "summary":
         print(json.dumps(dataset_summary(), indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "split-eval":
+        examples = load_examples_with_synthetic(
+            [Path(p) for p in args.synthetic_jsonl],
+            include_real=not args.synthetic_only,
+        )
+        report = train_dev_test_report(
+            examples,
+            seed=args.seed,
+            epochs=args.epochs,
+            holdout_sources=set(args.holdout_source or []),
+        )
+        # Do not dump learned weights by default; keep CLI output readable.
+        report.pop("weights", None)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "generate-synthetic":

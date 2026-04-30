@@ -106,6 +106,18 @@ def load_synthetic_examples(jsonl_path: Path) -> list[Example]:
     return examples
 
 
+def load_examples_with_synthetic(
+    synthetic_jsonl: list[Path] | None = None,
+    *,
+    include_real: bool = True,
+    paths: SourcePaths | None = None,
+) -> list[Example]:
+    examples = load_examples(paths) if include_real else []
+    for path in synthetic_jsonl or []:
+        examples.extend(load_synthetic_examples(Path(path)))
+    return examples
+
+
 def dataset_summary(paths: SourcePaths | None = None) -> dict[str, Any]:
     paths = paths or SourcePaths()
     examples = load_examples(paths)

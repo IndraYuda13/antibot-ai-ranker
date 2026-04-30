@@ -1,0 +1,21 @@
+{
+  "counts": {
+    "train": 820,
+    "dev": 175,
+    "test": 177,
+    "heldout": 87,
+    "total": 1259
+  },
+  "test_metrics": {
+    "total": 177,
+    "ok": 170,
+    "wrong": 7,
+    "accuracy": 96.05
+  },
+  "heldout_metrics": {
+    "total": 87,
+    "ok": 60,
+    "wrong": 27,
+    "accuracy": 68.97
+  }
+}

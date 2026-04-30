@@ -1,0 +1,15 @@
+{
+  "counts": {
+    "train": 280,
+    "dev": 60,
+    "test": 60,
+    "heldout": 0,
+    "total": 400
+  },
+  "test_metrics": {
+    "total": 60,
+    "ok": 32,
+    "wrong": 28,
+    "accuracy": 53.33
+  }
+}

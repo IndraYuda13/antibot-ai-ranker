@@ -9,7 +9,11 @@
 
 ## Phase 2: Better offline science
 
-- Add train/validation split by attempt id to avoid memorizing recent patterns.
+Status: split-aware eval v1 implemented.
+
+- Add train/validation split by attempt id to avoid memorizing recent patterns. ✅ v1 done
+- Keep manual labels as optional held-out source. ✅ v1 done
+- Mix synthetic JSONL with real data. ✅ v1 done
 - Compare current rule solver vs AI ranker on the same cases.
 - Add confidence calibration so low-confidence predictions can be flagged.
 - Add per-family error reports for numbers, short words, animal words, object words, and leetspeak.
