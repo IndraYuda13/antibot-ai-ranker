@@ -86,3 +86,5 @@ and source data is configured through environment variables if the default local
 This is research tooling. It does not replace the live solver yet. No model from this repo should be integrated into production until it beats the current rule solver on held-out manual labels and then survives a live post-restart soak window.
 
 Conservative override threshold calibration is available through `antibot-ranker validate-conservative`; add `--conservative` to `validate-multiseed` for split-stability checks.
+
+Disagreement mining is available through `antibot-ranker mine-disagreements --epochs 4 --output artifacts/disagreements-epochs4.jsonl`. It exports rule/AI disagreement rows for gate training and manual review.

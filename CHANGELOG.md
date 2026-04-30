@@ -27,3 +27,5 @@
 - Added multi-seed override validation to measure split stability.
 
 - Added conservative override threshold calibration and multi-seed conservative mode.
+
+- Added disagreement mining/export CLI for rule-vs-AI gate training data.

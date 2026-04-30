@@ -196,3 +196,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Conservative override calibration v1
 
 `validate-conservative` calibrates the override model decision threshold on the calibration split with a minimum accepted/raw accuracy constraint. The single-seed result selected threshold `0.02`, with real accepted hybrid `187/189` (`98.94%`) and manual hard hybrid `39/44` (`88.64%`). Multi-seed conservative validation improved the real accepted minimum from `96.83%` to `97.35%`, mean `99.47%`, but still did not guarantee `100%` heldout accepted/raw. This proves calibration split safety alone is insufficient because the current calibration data does not contain enough accepted/raw disagreement negatives. Next work should collect more disagreement labels and add an explicit conservative fallback for unseen family/source patterns before production integration.
+
+
+### Disagreement mining v1
+
+`mine-disagreements --epochs 4` found `97` rule/AI disagreement rows: `39` negative cases where rule was correct and AI was wrong, `51` positive cases where rule was wrong and AI was correct, and `7` both-wrong cases. Source split was `39` accepted-success raw and `58` manual-label rows. Family split was dominated by `short_words` (`67` rows), followed by `leetspeak` (`14`) and `words` (`12`). This confirms the exact data needed for the next gate phase exists in the current corpus: accepted/raw negatives are no longer just theoretical, and should be used explicitly for conservative override training and evaluation.

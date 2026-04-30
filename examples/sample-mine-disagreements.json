@@ -1,0 +1,22 @@
+{
+  "total": 97,
+  "by_category": {
+    "negative_rule_ok_ai_wrong": 39,
+    "positive_rule_wrong_ai_ok": 51,
+    "both_wrong": 7
+  },
+  "by_source": {
+    "accepted_success_raw": 39,
+    "manual_label": 58
+  },
+  "by_family": {
+    "short_words": 67,
+    "leetspeak": 14,
+    "words": 12,
+    "animals": 1,
+    "number_words": 1,
+    "numeric": 1,
+    "unknown": 1
+  },
+  "output": "artifacts/disagreements-epochs4.jsonl"
+}

@@ -10,6 +10,7 @@ from .override_validation import conservative_override_gate_report, override_gat
 from .benchmark import benchmark_orders
 from .confidence import sweep_family_thresholds, sweep_thresholds
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
+from .disagreements import mine_disagreements, summarize_disagreements
 from .features import predict_order, predict_order_scored
 from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
@@ -89,6 +90,11 @@ def main() -> None:
     multiseed.add_argument("--seeds", default="11,22,33,44,55")
     multiseed.add_argument("--conservative", action="store_true")
     multiseed.add_argument("--min-accepted-accuracy", type=float, default=100.0)
+    mine = sub.add_parser("mine-disagreements")
+    mine.add_argument("--epochs", type=int, default=8)
+    mine.add_argument("--seed", type=int, default=1337)
+    mine.add_argument("--limit", type=int)
+    mine.add_argument("--output", default="artifacts/disagreements.jsonl")
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -109,6 +115,26 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "mine-disagreements":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        weights = train_perceptron(examples, epochs=args.epochs, seed=args.seed)
+        predictions: dict[str, list[str]] = {}
+        confidences: dict[str, float] = {}
+        for ex in examples:
+            pred = predict_order_scored(ex, weights)
+            predictions[ex.case_id] = pred.order
+            confidences[ex.case_id] = pred.confidence
+        rows = mine_disagreements(examples, predictions, confidences)
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        with output.open("w", encoding="utf-8") as handle:
+            for row in rows:
+                handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+        print(json.dumps({"output": str(output), "summary": summarize_disagreements(rows)}, indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "validate-conservative":

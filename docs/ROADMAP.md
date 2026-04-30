@@ -43,3 +43,6 @@ Status: v1 implemented.
 
 - [x] Add conservative override threshold calibration.
 - [ ] Collect more accepted/raw disagreement negatives because calibration-only safety still misses heldout raw regressions.
+
+- [x] Add disagreement mining/export for hard negative and positive override examples.
+- [ ] Use mined disagreement rows to train a stronger source/family-aware override gate.
