@@ -181,3 +181,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Safety objective v1
 
 `validate-safety` selects family thresholds with an explicit penalty for accepted-success raw regressions. With accepted penalty `10`, manual test hybrid reached `37/44` (`84.09%`) but real accepted test was only `179/187` (`95.72%`). With accepted penalty `25`, real accepted hybrid improved to `185/187` (`98.93%`) but manual test dropped to `18/44` (`40.91%`). This exposes the core tradeoff: current confidence is not sharp enough to protect accepted raw while capturing most manual hard-case gains. The next productive step is a better calibrated model/objective, not just threshold tweaking.
+
+
+### Learned override gate v1
+
+`validate-override` trains a small classifier on calibration disagreements to decide when the AI ranker may override the rule solver. With `manual_calibration_ratio=0.5` and `override_epochs=40`, it learned from `24` override examples. On the current live dataset snapshot, real accepted test stayed at `188/188` (`100%`) and manual hard test improved from rule `9/44` (`20.45%`) to hybrid `39/44` (`88.64%`). This is the first validation lane that preserves accepted raw while capturing almost all current manual hard-case gains. It is still not production-ready because the override classifier only has 24 supervised disagreement examples; next gate should expand disagreement data with synthetic and live soak samples, then repeat split/stability checks across seeds.

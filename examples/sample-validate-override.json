@@ -1,0 +1,22 @@
+{
+  "counts": {
+    "real_train": 873,
+    "real_dev": 187,
+    "real_test": 188,
+    "manual_calibration": 43,
+    "manual_test": 44,
+    "calibration_total": 230,
+    "total": 1335
+  },
+  "override_training_examples": 24,
+  "real_test_metrics": {
+    "rule": "188/188 = 100.00%",
+    "ai": "188/188 = 100.00%",
+    "hybrid": "188/188 = 100.00%"
+  },
+  "manual_test_metrics": {
+    "rule": "9/44 = 20.45%",
+    "ai": "39/44 = 88.64%",
+    "hybrid": "39/44 = 88.64%"
+  }
+}

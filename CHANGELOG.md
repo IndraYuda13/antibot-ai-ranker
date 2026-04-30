@@ -21,4 +21,5 @@
 - Added OCR alias features for short-word and leetspeak hard cases.
 - Added dev-selected family gate validation CLI to expose calibration behavior on test/heldout splits.
 - Added balanced manual calibration/test validation CLI for honest hard-case gate evaluation.
-- Added safety-objective gate validation with accepted-raw regression penalty. This is research-only and not a production claim.
+- Added safety-objective gate validation with accepted-raw regression penalty.
+- Added learned override-gate validation to decide when AI may replace rule order. This is research-only and not a production claim.

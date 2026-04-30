@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .balanced_validation import balanced_manual_gate_report, safety_balanced_gate_report
+from .override_validation import override_gate_report
 from .benchmark import benchmark_orders
 from .confidence import sweep_family_thresholds, sweep_thresholds
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
@@ -66,6 +67,12 @@ def main() -> None:
     safety.add_argument("--limit", type=int)
     safety.add_argument("--manual-calibration-ratio", type=float, default=0.5)
     safety.add_argument("--accepted-penalty", type=float, default=10.0)
+    override = sub.add_parser("validate-override")
+    override.add_argument("--epochs", type=int, default=8)
+    override.add_argument("--seed", type=int, default=1337)
+    override.add_argument("--limit", type=int)
+    override.add_argument("--manual-calibration-ratio", type=float, default=0.5)
+    override.add_argument("--override-epochs", type=int, default=25)
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -86,6 +93,19 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "validate-override":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        print(json.dumps(override_gate_report(
+            examples,
+            epochs=args.epochs,
+            seed=args.seed,
+            manual_calibration_ratio=args.manual_calibration_ratio,
+            override_epochs=args.override_epochs,
+        ), indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "validate-safety":
