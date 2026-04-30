@@ -52,3 +52,6 @@ Status: v1 implemented.
 
 - [x] Add fast multi-seed disagreement-gate validation.
 - [ ] Add shadow-mode export/contract for future production solver soak without submit.
+
+- [x] Add shadow/no-submit JSON contract and export CLI.
+- [ ] Wire future production solver only in no-submit shadow mode first, using the JSON contract.

@@ -33,3 +33,5 @@
 - Added disagreement-trained override gate validation using mined positive/negative examples.
 
 - Added fast multi-seed disagreement-gate validation and recorded stable five-seed results.
+
+- Added shadow/no-submit JSON contract and `shadow-export` CLI for safe future soak testing.

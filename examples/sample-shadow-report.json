@@ -1,0 +1,13 @@
+{
+  "command": "antibot-ranker shadow-export --epochs 4 --gate-epochs 80 --negative-weight 8 --limit 25 --output artifacts/shadow-report-sample.json",
+  "schema_version": "antibot-ai-ranker.shadow-report.v1",
+  "decision_schema_version": "antibot-ai-ranker.shadow.v1",
+  "no_submit": true,
+  "summary": {
+    "total": 25,
+    "would_override": 0,
+    "kept_production_order": 25,
+    "by_source": {"accepted_success_raw": 25},
+    "by_family": {"short_words": 19, "words": 6}
+  }
+}

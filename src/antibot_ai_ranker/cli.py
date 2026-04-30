@@ -14,6 +14,7 @@ from .disagreement_gate import train_disagreement_gate_report
 from .disagreements import mine_disagreements, summarize_disagreements
 from .fast_disagreement_multiseed import fast_disagreement_multiseed_report
 from .features import predict_order, predict_order_scored
+from .shadow_report import build_shadow_report
 from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
 from .train import default_weights, evaluate_examples, save_model, train_perceptron
@@ -111,6 +112,13 @@ def main() -> None:
     dgm.add_argument("--manual-calibration-ratio", type=float, default=0.5)
     dgm.add_argument("--limit", type=int)
     dgm.add_argument("--seeds", default="11,22,33,44,55")
+    shadow = sub.add_parser("shadow-export")
+    shadow.add_argument("--epochs", type=int, default=4)
+    shadow.add_argument("--gate-epochs", type=int, default=80)
+    shadow.add_argument("--negative-weight", type=float, default=8.0)
+    shadow.add_argument("--seed", type=int, default=1337)
+    shadow.add_argument("--limit", type=int)
+    shadow.add_argument("--output", default="artifacts/shadow-report.json")
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -131,6 +139,22 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "shadow-export":
+        examples = load_examples()
+        report = build_shadow_report(
+            examples,
+            epochs=args.epochs,
+            gate_epochs=args.gate_epochs,
+            negative_weight=args.negative_weight,
+            seed=args.seed,
+            limit=args.limit,
+        )
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(json.dumps({"output": str(output), "summary": report["summary"]}, indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "validate-disagreement-multiseed":

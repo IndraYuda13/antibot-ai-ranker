@@ -211,3 +211,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Fast multi-seed disagreement-gate validation v1
 
 `validate-disagreement-multiseed --epochs 4 --gate-epochs 80 --negative-weight 8 --seeds 11,22,33,44,55` completed without SIGKILL and is the first stability gate where heldout real accepted hybrid stayed `100%` across all five seeds. Summary: real accepted hybrid min/mean/max `100.0% / 100.0% / 100.0%`; manual hard hybrid min/mean/max `75.0% / 79.09% / 84.09%`; manual rule baseline mean only `19.55%`. Override training rows ranged `47-60` across seeds. This is strong enough to move to shadow-mode planning, but still not production integration: next gate should run the learned decision in a no-submit/live-shadow path and log disagreements before touching `antibot-image-solver` production behavior.
+
+
+### Shadow/no-submit contract v1
+
+`shadow-export` writes a stable `antibot-ai-ranker.shadow-report.v1` JSON report. Each decision uses `antibot-ai-ranker.shadow.v1`, includes `no_submit: true`, preserves `production_order`, records `shadow_order`, `would_override`, family/source, AI confidence, and override probability. Sample run `shadow-export --epochs 4 --gate-epochs 80 --negative-weight 8 --limit 25` wrote `25` accepted/raw decisions, all kept production order (`would_override=0`). This creates the safe contract for future live shadow/soak integration: production solver can log ranker decisions without changing submitted answers.
