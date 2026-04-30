@@ -1,0 +1,16 @@
+{
+  "manual_only": {
+    "words": "10/11 = 90.91%",
+    "short_words": "44/57 = 77.19%",
+    "leetspeak": "11/13 = 84.62%",
+    "number_words": "1/1 = 100.00%",
+    "numeric": "2/4 = 50.00%"
+  },
+  "all_data": {
+    "words": "244/248 = 98.39%",
+    "short_words": "920/954 = 96.44%",
+    "leetspeak": "53/58 = 91.38%",
+    "number_words": "9/9 = 100.00%",
+    "numeric": "4/6 = 66.67%"
+  }
+}

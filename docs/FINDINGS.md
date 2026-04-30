@@ -161,3 +161,8 @@ Family-aware threshold sweep now groups examples by question token family. Curre
 ### Numeric feature pass v1
 
 Numeric-aware features now parse digits, number words, roman numerals, simple math expressions, and common leet number-word forms. This improved weak numeric families: manual-only numeric moved from `2/4` to `3/4`, number_words from `0/1` to `1/1`; all-data numeric moved from `4/6` to `5/6`, number_words from `8/9` to `9/9`. Short_words and leetspeak still need broader feature/model work, so the AI ranker is still research-only.
+
+
+### OCR alias feature pass v1
+
+Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> zoo`, `20r -> zor`, `mc -> arc`, `cir -> or`, `teg -> 424`, `t03 -> te`, `mal -> mel`, and `dnt -> lem`. Manual-only family calibration improved words `9/11 -> 10/11` and short_words `40/57 -> 44/57` compared with the earlier family baseline. All-data words reached `244/248` (`98.39%`) and short_words `920/954` (`96.44%`). Numeric remains unstable after feature interactions, so future work needs a proper model/validation split rather than only weight tweaks.
