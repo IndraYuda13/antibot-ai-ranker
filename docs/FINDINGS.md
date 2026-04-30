@@ -216,3 +216,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Shadow/no-submit contract v1
 
 `shadow-export` writes a stable `antibot-ai-ranker.shadow-report.v1` JSON report. Each decision uses `antibot-ai-ranker.shadow.v1`, includes `no_submit: true`, preserves `production_order`, records `shadow_order`, `would_override`, family/source, AI confidence, and override probability. Sample run `shadow-export --epochs 4 --gate-epochs 80 --negative-weight 8 --limit 25` wrote `25` accepted/raw decisions, all kept production order (`would_override=0`). This creates the safe contract for future live shadow/soak integration: production solver can log ranker decisions without changing submitted answers.
+
+
+### Shadow provider command v1
+
+`antibot-ranker shadow-provider` now reads `antibot-image-solver.ranker-shadow.v1` JSON from stdin and returns provider fields (`shadow_order`, `would_override`, `override_probability`, `ai_confidence`, `provider`) on stdout. Smoke through the solver hook preserved production `ordered_ids=[a,b,c]`, logged `status=provider_decision_logged`, and kept `no_submit=true`. This wires the two repos at the contract level. Current provider intentionally uses the ranker default weights only and does not yet load a persisted disagreement-gate artifact, so it is suitable for contract smoke, not live production override.

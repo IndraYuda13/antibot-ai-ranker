@@ -1,0 +1,13 @@
+{
+  "provider": "antibot-ai-ranker",
+  "status": "ranker_decision_logged",
+  "no_submit": true,
+  "shadow_order": ["a", "b", "c"],
+  "would_override": false,
+  "override_probability": 0.0,
+  "ai_confidence": 0.35,
+  "solver_hook_smoke": {
+    "ordered_ids_preserved": ["a", "b", "c"],
+    "hook_status": "provider_decision_logged"
+  }
+}

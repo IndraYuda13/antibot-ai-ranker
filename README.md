@@ -94,3 +94,5 @@ Disagreement-trained override validation is available through `antibot-ranker va
 Fast disagreement-gate stability validation is available through `antibot-ranker validate-disagreement-multiseed --epochs 4 --gate-epochs 80 --negative-weight 8 --seeds 11,22,33,44,55`.
 
 Shadow/no-submit export is available through `antibot-ranker shadow-export --epochs 4 --gate-epochs 80 --negative-weight 8 --output artifacts/shadow-report.json`. It writes `antibot-ai-ranker.shadow-report.v1` JSON and never changes/submits production order.
+
+Shadow provider command for `antibot-image-solver` is available through `antibot-ranker shadow-provider`. It reads the solver shadow JSON from stdin and returns no-submit ranker fields on stdout.

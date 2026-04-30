@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from .balanced_validation import balanced_manual_gate_report, safety_balanced_gate_report
@@ -14,6 +15,7 @@ from .disagreement_gate import train_disagreement_gate_report
 from .disagreements import mine_disagreements, summarize_disagreements
 from .fast_disagreement_multiseed import fast_disagreement_multiseed_report
 from .features import predict_order, predict_order_scored
+from .provider import build_provider_decision
 from .shadow_report import build_shadow_report
 from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
@@ -119,6 +121,7 @@ def main() -> None:
     shadow.add_argument("--seed", type=int, default=1337)
     shadow.add_argument("--limit", type=int)
     shadow.add_argument("--output", default="artifacts/shadow-report.json")
+    sub.add_parser("shadow-provider")
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -139,6 +142,11 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "shadow-provider":
+        payload = json.loads(sys.stdin.read() or "{}")
+        print(json.dumps(build_provider_decision(payload), ensure_ascii=False))
         return
 
     if args.cmd == "shadow-export":

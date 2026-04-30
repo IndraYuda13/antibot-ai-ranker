@@ -55,3 +55,6 @@ Status: v1 implemented.
 
 - [x] Add shadow/no-submit JSON contract and export CLI.
 - [ ] Wire future production solver only in no-submit shadow mode first, using the JSON contract.
+
+- [x] Add `shadow-provider` stdin/stdout command compatible with `antibot-image-solver` external provider hook.
+- [ ] Replace conservative default-weights provider with persisted trained disagreement-gate artifact before live soak.
