@@ -83,6 +83,29 @@ def load_examples(paths: SourcePaths | None = None, *, include_weak: bool = True
     return examples
 
 
+def load_synthetic_examples(jsonl_path: Path) -> list[Example]:
+    examples: list[Example] = []
+    root = jsonl_path.parent
+    for index, line in enumerate(jsonl_path.read_text().splitlines(), 1):
+        if not line.strip():
+            continue
+        data = json.loads(line)
+        option_texts = {str(k): [str(v)] for k, v in (data.get("option_texts") or {}).items()}
+        examples.append(
+            Example(
+                case_id=str(data.get("challenge_id") or f"synthetic_{index:06d}"),
+                attempt_id=index,
+                source=str(data.get("source") or "synthetic"),
+                verdict="synthetic_success",
+                capture_path=root / str(data.get("images", {}).get("question") or ""),
+                question_ocr=[str(data.get("question_text") or "")],
+                option_ocr=option_texts,
+                expected_order=_split_order(data.get("correct_order")),
+            )
+        )
+    return examples
+
+
 def dataset_summary(paths: SourcePaths | None = None) -> dict[str, Any]:
     paths = paths or SourcePaths()
     examples = load_examples(paths)

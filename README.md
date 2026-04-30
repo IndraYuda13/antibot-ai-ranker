@@ -39,7 +39,7 @@ Current stdlib-only ranker baseline on the available local data:
 - Wrong: `51`
 - Accuracy: `95.75%`
 
-This is a baseline, not the final model. It proves the project can load the data, train a simple ranker, and produce measurable eval output.
+This is a baseline, not the final model. It proves the project can load the data, train a simple ranker, and produce measurable eval output. The repo also includes a synthetic AntiBotLinks-style generator for fast dataset expansion.
 
 ## Quick start
 
@@ -48,6 +48,8 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -e . pytest
 antibot-ranker summary
+antibot-ranker generate-synthetic --count 10000 --options 3 --output-dir data/synthetic-3opt
+antibot-ranker generate-synthetic --count 10000 --options 4 --output-dir data/synthetic-4opt
 antibot-ranker train --output artifacts/model.json
 antibot-ranker evaluate --model artifacts/model.json
 pytest

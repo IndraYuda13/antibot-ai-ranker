@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .dataset import dataset_summary, load_examples
+from .synthetic import SyntheticConfig, generate_dataset
 from .train import default_weights, evaluate_examples, save_model, train_perceptron
 
 
@@ -17,10 +18,29 @@ def main() -> None:
     train.add_argument("--epochs", type=int, default=8)
     evalp = sub.add_parser("evaluate")
     evalp.add_argument("--model", default="artifacts/model.json")
+    synth = sub.add_parser("generate-synthetic")
+    synth.add_argument("--count", type=int, required=True)
+    synth.add_argument("--options", type=int, default=3)
+    synth.add_argument("--output-dir", default="data/synthetic")
+    synth.add_argument("--seed", type=int, default=1337)
+    synth.add_argument("--no-noise", action="store_true")
+    synth.add_argument("--dark-theme", action="store_true")
     args = parser.parse_args()
 
     if args.cmd == "summary":
         print(json.dumps(dataset_summary(), indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "generate-synthetic":
+        cfg = SyntheticConfig(
+            option_count=args.options,
+            seed=args.seed,
+            output_dir=Path(args.output_dir),
+            noise=not args.no_noise,
+            dark_theme=args.dark_theme,
+        )
+        path = generate_dataset(count=args.count, cfg=cfg)
+        print(json.dumps({"path": str(path), "count": args.count, "option_count": args.options}, indent=2, ensure_ascii=False))
         return
 
     examples = load_examples()
@@ -35,3 +55,8 @@ def main() -> None:
         path = Path(args.model)
         weights = json.loads(path.read_text())["weights"] if path.exists() else default_weights()
         print(json.dumps(evaluate_examples(examples, weights), indent=2, ensure_ascii=False))
+        return
+
+
+if __name__ == "__main__":
+    main()

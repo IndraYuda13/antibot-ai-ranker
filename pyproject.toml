@@ -9,6 +9,7 @@ description = "Research baseline for learning Antibot option ordering from OCR/d
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Indra Yuda" }]
+dependencies = ["Pillow>=10.0"]
 keywords = ["antibot", "ranker", "ocr", "ml"]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",

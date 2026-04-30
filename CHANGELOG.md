@@ -10,5 +10,6 @@
   - `antibot-ranker summary`
   - `antibot-ranker train`
   - `antibot-ranker evaluate`
-- Added tests for text normalization, path resolution, and simple rank prediction.
-- First local baseline reached about `95.75%` replay accuracy on current imported examples after refresh. This is research-only and not a production claim.
+- Added tests for text normalization, path resolution, simple rank prediction, synthetic generation, synthetic loader, and synthetic CLI.
+- First local baseline reached about `95.75%` replay accuracy on current imported examples after refresh.
+- Added synthetic AntiBotLinks-style dataset generator v1 with 3-option and 4-option support. This is research-only and not a production claim.

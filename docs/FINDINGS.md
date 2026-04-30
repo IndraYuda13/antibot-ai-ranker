@@ -135,9 +135,9 @@ Generator should support:
 
 ### Next implementation steps
 
-1. Add `synthetic.py` generator to this repo.
-2. Add `antibot-ranker generate-synthetic --count N --options 3|4`.
-3. Add dataset loader for synthetic JSONL.
+1. Add `synthetic.py` generator to this repo. ✅ v1 done.
+2. Add `antibot-ranker generate-synthetic --count N --options 3|4`. ✅ v1 done.
+3. Add dataset loader for synthetic JSONL. ✅ v1 done.
 4. Add split-aware evaluation: train/dev/test by challenge ID and source type.
 5. Add rule-solver vs AI-ranker benchmark on the same cases.
 6. After synthetic v1 works, use Colab T4 for neural ranker experiments.

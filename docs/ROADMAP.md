@@ -16,10 +16,13 @@
 
 ## Phase 3: Synthetic data lab
 
+Status: v1 implemented.
+
 - Generate antibotlink-like question and option images.
 - Support 3-option and 4-option layouts.
 - Randomize font, color, rotation, blur, noise, compression, punctuation, and leetspeak.
 - Export perfect labels automatically.
+- Next: add stronger family coverage, train/dev/test split, and synthetic-real mix evaluation.
 
 ## Phase 4: Colab GPU lane
 
