@@ -90,3 +90,5 @@ Conservative override threshold calibration is available through `antibot-ranker
 Disagreement mining is available through `antibot-ranker mine-disagreements --epochs 4 --output artifacts/disagreements-epochs4.jsonl`. It exports rule/AI disagreement rows for gate training and manual review.
 
 Disagreement-trained override validation is available through `antibot-ranker validate-disagreement-gate --epochs 4 --gate-epochs 80 --negative-weight 8`.
+
+Fast disagreement-gate stability validation is available through `antibot-ranker validate-disagreement-multiseed --epochs 4 --gate-epochs 80 --negative-weight 8 --seeds 11,22,33,44,55`.

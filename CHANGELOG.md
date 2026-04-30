@@ -31,3 +31,5 @@
 - Added disagreement mining/export CLI for rule-vs-AI gate training data.
 
 - Added disagreement-trained override gate validation using mined positive/negative examples.
+
+- Added fast multi-seed disagreement-gate validation and recorded stable five-seed results.

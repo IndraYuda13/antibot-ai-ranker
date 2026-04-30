@@ -12,6 +12,7 @@ from .confidence import sweep_family_thresholds, sweep_thresholds
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
 from .disagreement_gate import train_disagreement_gate_report
 from .disagreements import mine_disagreements, summarize_disagreements
+from .fast_disagreement_multiseed import fast_disagreement_multiseed_report
 from .features import predict_order, predict_order_scored
 from .splits import train_dev_test_report
 from .synthetic import SyntheticConfig, generate_dataset
@@ -103,6 +104,13 @@ def main() -> None:
     dg.add_argument("--manual-calibration-ratio", type=float, default=0.5)
     dg.add_argument("--gate-epochs", type=int, default=50)
     dg.add_argument("--negative-weight", type=float, default=8.0)
+    dgm = sub.add_parser("validate-disagreement-multiseed")
+    dgm.add_argument("--epochs", type=int, default=4)
+    dgm.add_argument("--gate-epochs", type=int, default=80)
+    dgm.add_argument("--negative-weight", type=float, default=8.0)
+    dgm.add_argument("--manual-calibration-ratio", type=float, default=0.5)
+    dgm.add_argument("--limit", type=int)
+    dgm.add_argument("--seeds", default="11,22,33,44,55")
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -123,6 +131,21 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "validate-disagreement-multiseed":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        seeds = [int(part.strip()) for part in args.seeds.split(",") if part.strip()]
+        print(json.dumps(fast_disagreement_multiseed_report(
+            examples,
+            seeds=seeds,
+            epochs=args.epochs,
+            gate_epochs=args.gate_epochs,
+            negative_weight=args.negative_weight,
+            manual_calibration_ratio=args.manual_calibration_ratio,
+        ), indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "validate-disagreement-gate":

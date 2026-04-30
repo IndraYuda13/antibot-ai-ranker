@@ -49,3 +49,6 @@ Status: v1 implemented.
 
 - [x] Add disagreement-trained override gate using mined positive/negative disagreement examples.
 - [ ] Run lighter/faster multi-seed disagreement-gate sweep after optimizing report speed.
+
+- [x] Add fast multi-seed disagreement-gate validation.
+- [ ] Add shadow-mode export/contract for future production solver soak without submit.

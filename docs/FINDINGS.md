@@ -206,3 +206,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Disagreement-trained override gate v1
 
 `validate-disagreement-gate --epochs 4 --gate-epochs 80 --negative-weight 8` trains the override gate directly from mined disagreement examples in the train+calibration pool. The run used `48` disagreement rows (`21` negative rule-correct/AI-wrong, `22` positive rule-wrong/AI-correct, `5` both-wrong) and `43` supervised override rows. Heldout real accepted test reached `205/205` (`100%`) for rule, AI, and hybrid; manual hard test improved from rule `9/44` (`20.45%`) to hybrid `38/44` (`86.36%`). This is the strongest single-split result so far because it uses the exact negative examples that earlier gates lacked. Multi-seed sweep still needs optimization because the naive repeated report was too slow and got killed; do not call this production-ready until that stability gate passes.
+
+
+### Fast multi-seed disagreement-gate validation v1
+
+`validate-disagreement-multiseed --epochs 4 --gate-epochs 80 --negative-weight 8 --seeds 11,22,33,44,55` completed without SIGKILL and is the first stability gate where heldout real accepted hybrid stayed `100%` across all five seeds. Summary: real accepted hybrid min/mean/max `100.0% / 100.0% / 100.0%`; manual hard hybrid min/mean/max `75.0% / 79.09% / 84.09%`; manual rule baseline mean only `19.55%`. Override training rows ranged `47-60` across seeds. This is strong enough to move to shadow-mode planning, but still not production integration: next gate should run the learned decision in a no-submit/live-shadow path and log disagreements before touching `antibot-image-solver` production behavior.
