@@ -1,0 +1,8 @@
+{
+  "manual_calibration_ratio": 0.35,
+  "manual_test_metrics": {
+    "rule": "12/57 = 21.05%",
+    "ai": "49/57 = 85.96%",
+    "hybrid": "40/57 = 70.18%"
+  }
+}

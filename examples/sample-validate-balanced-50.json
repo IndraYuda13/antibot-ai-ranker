@@ -1,0 +1,29 @@
+{
+  "counts": {
+    "real_train": 863,
+    "real_dev": 184,
+    "real_test": 186,
+    "manual_calibration": 43,
+    "manual_test": 44,
+    "calibration_total": 227,
+    "total": 1320
+  },
+  "selected_thresholds": {
+    "words": 0.25,
+    "short_words": 0.1,
+    "leetspeak": 0.15,
+    "animals": 1.0,
+    "number_words": 1.0,
+    "numeric": 1.0
+  },
+  "real_test_metrics": {
+    "rule": "186/186 = 100.00%",
+    "ai": "178/186 = 95.70%",
+    "hybrid": "179/186 = 96.24%"
+  },
+  "manual_test_metrics": {
+    "rule": "9/44 = 20.45%",
+    "ai": "38/44 = 86.36%",
+    "hybrid": "35/44 = 79.55%"
+  }
+}

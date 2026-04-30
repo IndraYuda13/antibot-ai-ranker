@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .balanced_validation import balanced_manual_gate_report
 from .benchmark import benchmark_orders
 from .confidence import sweep_family_thresholds, sweep_thresholds
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
@@ -54,6 +55,11 @@ def main() -> None:
     gate.add_argument("--seed", type=int, default=1337)
     gate.add_argument("--limit", type=int)
     gate.add_argument("--holdout-source", action="append", default=[])
+    balanced = sub.add_parser("validate-balanced")
+    balanced.add_argument("--epochs", type=int, default=8)
+    balanced.add_argument("--seed", type=int, default=1337)
+    balanced.add_argument("--limit", type=int)
+    balanced.add_argument("--manual-calibration-ratio", type=float, default=0.5)
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -74,6 +80,18 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "validate-balanced":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        print(json.dumps(balanced_manual_gate_report(
+            examples,
+            epochs=args.epochs,
+            seed=args.seed,
+            manual_calibration_ratio=args.manual_calibration_ratio,
+        ), indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "validate-gate":
