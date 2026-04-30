@@ -1,0 +1,25 @@
+{
+  "disagreement_training": {
+    "total": 48,
+    "by_category": {
+      "negative_rule_ok_ai_wrong": 21,
+      "positive_rule_wrong_ai_ok": 22,
+      "both_wrong": 5
+    },
+    "by_source": {
+      "accepted_success_raw": 21,
+      "manual_label": 27
+    }
+  },
+  "override_training_examples": 43,
+  "real_test_metrics": {
+    "rule": "205/205 = 100.00%",
+    "ai": "205/205 = 100.00%",
+    "hybrid": "205/205 = 100.00%"
+  },
+  "manual_test_metrics": {
+    "rule": "9/44 = 20.45%",
+    "ai": "38/44 = 86.36%",
+    "hybrid": "38/44 = 86.36%"
+  }
+}

@@ -88,3 +88,5 @@ This is research tooling. It does not replace the live solver yet. No model from
 Conservative override threshold calibration is available through `antibot-ranker validate-conservative`; add `--conservative` to `validate-multiseed` for split-stability checks.
 
 Disagreement mining is available through `antibot-ranker mine-disagreements --epochs 4 --output artifacts/disagreements-epochs4.jsonl`. It exports rule/AI disagreement rows for gate training and manual review.
+
+Disagreement-trained override validation is available through `antibot-ranker validate-disagreement-gate --epochs 4 --gate-epochs 80 --negative-weight 8`.

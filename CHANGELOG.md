@@ -29,3 +29,5 @@
 - Added conservative override threshold calibration and multi-seed conservative mode.
 
 - Added disagreement mining/export CLI for rule-vs-AI gate training data.
+
+- Added disagreement-trained override gate validation using mined positive/negative examples.

@@ -10,6 +10,7 @@ from .override_validation import conservative_override_gate_report, override_gat
 from .benchmark import benchmark_orders
 from .confidence import sweep_family_thresholds, sweep_thresholds
 from .dataset import dataset_summary, load_examples, load_examples_with_synthetic
+from .disagreement_gate import train_disagreement_gate_report
 from .disagreements import mine_disagreements, summarize_disagreements
 from .features import predict_order, predict_order_scored
 from .splits import train_dev_test_report
@@ -95,6 +96,13 @@ def main() -> None:
     mine.add_argument("--seed", type=int, default=1337)
     mine.add_argument("--limit", type=int)
     mine.add_argument("--output", default="artifacts/disagreements.jsonl")
+    dg = sub.add_parser("validate-disagreement-gate")
+    dg.add_argument("--epochs", type=int, default=8)
+    dg.add_argument("--seed", type=int, default=1337)
+    dg.add_argument("--limit", type=int)
+    dg.add_argument("--manual-calibration-ratio", type=float, default=0.5)
+    dg.add_argument("--gate-epochs", type=int, default=50)
+    dg.add_argument("--negative-weight", type=float, default=8.0)
     args = parser.parse_args()
 
     if args.cmd == "summary":
@@ -115,6 +123,20 @@ def main() -> None:
         # Do not dump learned weights by default; keep CLI output readable.
         report.pop("weights", None)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+
+    if args.cmd == "validate-disagreement-gate":
+        examples = load_examples()
+        if args.limit:
+            examples = examples[: args.limit]
+        print(json.dumps(train_disagreement_gate_report(
+            examples,
+            epochs=args.epochs,
+            seed=args.seed,
+            manual_calibration_ratio=args.manual_calibration_ratio,
+            gate_epochs=args.gate_epochs,
+            negative_weight=args.negative_weight,
+        ), indent=2, ensure_ascii=False))
         return
 
     if args.cmd == "mine-disagreements":

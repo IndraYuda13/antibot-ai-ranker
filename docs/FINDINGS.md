@@ -201,3 +201,8 @@ Alias features now map common live OCR confusions such as `2p -> zip`, `200 -> z
 ### Disagreement mining v1
 
 `mine-disagreements --epochs 4` found `97` rule/AI disagreement rows: `39` negative cases where rule was correct and AI was wrong, `51` positive cases where rule was wrong and AI was correct, and `7` both-wrong cases. Source split was `39` accepted-success raw and `58` manual-label rows. Family split was dominated by `short_words` (`67` rows), followed by `leetspeak` (`14`) and `words` (`12`). This confirms the exact data needed for the next gate phase exists in the current corpus: accepted/raw negatives are no longer just theoretical, and should be used explicitly for conservative override training and evaluation.
+
+
+### Disagreement-trained override gate v1
+
+`validate-disagreement-gate --epochs 4 --gate-epochs 80 --negative-weight 8` trains the override gate directly from mined disagreement examples in the train+calibration pool. The run used `48` disagreement rows (`21` negative rule-correct/AI-wrong, `22` positive rule-wrong/AI-correct, `5` both-wrong) and `43` supervised override rows. Heldout real accepted test reached `205/205` (`100%`) for rule, AI, and hybrid; manual hard test improved from rule `9/44` (`20.45%`) to hybrid `38/44` (`86.36%`). This is the strongest single-split result so far because it uses the exact negative examples that earlier gates lacked. Multi-seed sweep still needs optimization because the naive repeated report was too slow and got killed; do not call this production-ready until that stability gate passes.

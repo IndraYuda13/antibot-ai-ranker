@@ -46,3 +46,6 @@ Status: v1 implemented.
 
 - [x] Add disagreement mining/export for hard negative and positive override examples.
 - [ ] Use mined disagreement rows to train a stronger source/family-aware override gate.
+
+- [x] Add disagreement-trained override gate using mined positive/negative disagreement examples.
+- [ ] Run lighter/faster multi-seed disagreement-gate sweep after optimizing report speed.
